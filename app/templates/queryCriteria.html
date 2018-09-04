@@ -1,0 +1,646 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <form action="/query" method="post" name="mainQuery" enctype="multipart/form-data">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">HmtDB Query Criteria</h3>
+
+            <div class="row">
+
+                <div class="col-sm-12 w3-center">
+
+                    <input class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-large" type="reset" name="query_reset" value="Reset">&nbsp;
+                    <input class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-large" type="submit" name="query_submit" value="Search">
+
+                </div>
+
+            </div>
+
+            <br />
+
+            <table class="table" cellspacing="0" cellpadding="0">
+
+                <thead>
+
+                <tr class="w3-light-blue w3-text-indigo w3-large">
+                    <th class="w3-padding-large">Search Criteria</th>
+                    <th class="w3-padding-large">Description</th>
+                    <th class="w3-padding-large" style="min-width: 15em;">Values</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr> <!-- HmtDB Genome ID -->
+                    <td><b>HmtDB Genome Identifier</b></td>
+                    <td>Search for a specific HmtDB Genome Identifier</td>
+                    <td>
+                        <input class="w3-input w3-border w3-round-large w3-pale-green" type="text" id="haplotypeHmdb" name="haplotypeHmdb">
+                    </td>
+                </tr>
+
+                <tr> <!-- GenBank An -->
+                    <td><b>Reference DB Source Identifier</b></td>
+                    <td>Search for a specific Database Source Identifier</td>
+                    <td>
+                        <input class="w3-input w3-border w3-round-large w3-pale-green" type="text" id="referenceDbId" name="referenceDbId">
+                    </td>
+                </tr>
+
+                <tr> <!-- Continent -->
+                    <td rowspan="2"><b>Subjects' Geographical Origin</b></td>
+                    <td>Search for a specific continent</td>
+                    <td>
+                        <select class="w3-select w3-border w3-pale-green w3-round-large" name="continent" id="continent" onchange="populateCountries(this.id, 'country')">
+                            <option value="" selected>--All Continents--</option>
+                            <option value="AF">Africa</option>
+                            <option value="AM">America</option>
+                            <option value="AS">Asia</option>
+                            <option value="EU">Europe</option>
+                            <option value="OC">Oceania</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr> <!-- Country -->
+                    <td>Search for a specific country</td>
+                    <td>
+                        <select class="w3-select w3-border w3-pale-green w3-round-large" name="country" id="country">
+                            <option value="" selected>--All Countries--</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr> <!-- Macro-Haplogroups -->
+{#                    <td rowspan="3"><b>Haplogroups</b></td> debug: temporarily disabled to fix issue #}
+                    <td><b>Haplogroups</b></td>
+                    <td>Select a macrohaplogroup</td>
+                    <td>
+{#                        <select class="w3-select w3-border w3-pale-green w3-round-large" name="macrohap" id="macrohap" onchange="populateHaplogroups(this.id, 'haplogroup'); populateUserHaplogroups(this.id, 'haplogroup_user')"> debug: temporarily disabled #}
+                        <select class="w3-select w3-border w3-pale-green w3-round-large" name="macrohap" id="macrohap">
+                            <option value="" selected>--All Macrohaplogroups--</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="G">G</option>
+                            <option value="H">H</option>
+                            <option value="I">I</option>
+                            <option value="J">J</option>
+                            <option value="K">K</option>
+                            <option value="L">L</option>
+                            <option value="M">M</option>
+                            <option value="N">N</option>
+                            <option value="O">O</option>
+                            <option value="P">P</option>
+                            <option value="Q">Q</option>
+                            <option value="R">R</option>
+                            <option value="S">S</option>
+                            <option value="T">T</option>
+                            <option value="U">U</option>
+                            <option value="V">V</option>
+                            <option value="W">W</option>
+                            <option value="X">X</option>
+                            <option value="Y">Y</option>
+                            <option value="Z">Z</option>
+                        </select>
+                    </td>
+                </tr>
+
+{#                <tr> <!-- HmtDB Assigned Haplogroups -->#}
+{#                    <td>Search for a specific <em>HmtDB</em>-assigned haplogroup</td> debug: temporarily disabled#}
+{#                    <td>#}
+{#                        <select class="w3-select w3-border w3-pale-green w3-round-large" name="haplogroup" id="haplogroup">#}
+{#                            <option value="" selected>--All Haplogroups--</option>#}
+{#                        </select>#}
+{#                    </td>#}
+{#                </tr>#}
+{##}
+{#                <tr> <!-- Author Assigned Haplogroups -->#}
+{#                    <td>Search for a specific <em>author</em>-assigned haplogroup</td>#}
+{#                    <td>#}
+{#                        <select class="w3-select w3-border w3-pale-green w3-round-large" name="haplogroup_user" id="haplogroup_user">#}
+{#                            <option value="" selected>--All Haplogroups--</option>#}
+{#                        </select>#}
+{#                    </td>#}
+{#                </tr>#}
+
+                <tr> <!-- Complete genomes -->
+                    <td><b>Complete Genomes/Only Coding Regions</b></td>
+                    <td>Search for complete genomes, only coding regions or the entire database</td>
+                    <td>
+                        <label class="w3-validate">
+                            <input class="w3-radio" type="radio" name="complete_genome" value="" checked> Whole Database
+                        </label><br>
+                        <label class="w3-validate">
+                            <input class="w3-radio" type="radio" name="complete_genome" value="Y"> Complete Genomes
+                        </label><br>
+                        <label class="w3-validate">
+                            <input class="w3-radio" type="radio" name="complete_genome" value="N"> Coding Regions
+                        </label>
+                    </td>
+                </tr>
+
+                <tr> <!-- SNP -->
+                    <td><b>SNP Position</b></td>
+                    <td>Search for SNPs in one position (e.g. 263), several positions (e.g. 245,2145,11789) or in a specific region (1120-2780)</td>
+                    <td>
+                        <input class="w3-input w3-border w3-round-large w3-pale-green" type="text" name="snp_position" id="snp_position">
+                    </td>
+                </tr>
+
+                <tr> <!-- Variation Type -->
+                    <td rowspan="8"><b>Variation Type</b></td>
+                    <td>Transitions</td>
+                    <td>
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transit" value="0" id="transit" checked> All Transitions
+                        </label><br>
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transit" value="AG" id="transit" onclick="uncheckTrans('transit')"> A &#8594; G
+                        </label>&nbsp;&nbsp;
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transit" value="GA" id="transit" onclick="uncheckTrans('transit')"> G &#8594; A
+                        </label><br>
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transit" value="CT" id="transit" onclick="uncheckTrans('transit')"> C &#8594; T
+                        </label>&nbsp;&nbsp;
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transit" value="TC" id="transit" onclick="uncheckTrans('transit')"> T &#8594; C
+                        </label>
+                    </td>
+                </tr>
+
+                <tr> <!-- Transvertions -->
+                    <td>Transvertions</td>
+                    <td>
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transv" value="0" id="transv" checked> All Transvertions
+                        </label><br>
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transv" value="AC" id="transv" onclick="uncheckTrans('transv')"> A &#8594; C
+                        </label>&nbsp;&nbsp;
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transv" value="AT" id="transv" onclick="uncheckTrans('transv')"> A &#8594; T
+                        </label><br>
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transv" value="CA" id="transv" onclick="uncheckTrans('transv')"> C &#8594; A
+                        </label>&nbsp;&nbsp;
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transv" value="CG" id="transv" onclick="uncheckTrans('transv')"> C &#8594; G
+                        </label><br>
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transv" value="GC" id="transv" onclick="uncheckTrans('transv')"> G &#8594; C
+                        </label>&nbsp;&nbsp;
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transv" value="GT" id="transv" onclick="uncheckTrans('transv')"> G &#8594; T
+                        </label><br>
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transv" value="TA" id="transv" onclick="uncheckTrans('transv')"> T &#8594; A
+                        </label>&nbsp;&nbsp;
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="transv" value="TG" id="transv" onclick="uncheckTrans('transv')"> T &#8594; G
+                        </label>
+                    </td>
+                </tr>
+
+                <tr> <!-- Insertions -->
+                    <td>Insertions</td>
+                    <td>
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="insertion" id="insertion" checked> Include insertions
+                        </label>
+                    </td>
+                </tr>
+
+                <tr> <!-- 5' Insertions Position -->
+                    <td>5' Insertion Position</td>
+                    <td>
+                        <input class="w3-input w3-border w3-round-large w3-pale-green" type="text" name="insertion_position" id="insertion_position">
+                    </td>
+                </tr>
+
+                <tr> <!-- Insertion Sequence -->
+                    <td>Insertion Sequence</td>
+                    <td>
+                        <input class="w3-input w3-border w3-round-large w3-pale-green" type="text" name="insertion_sequence" id="insertion_sequence">
+                    </td>
+                </tr>
+
+                <!-- <tr>
+                    <td>Insertion Length</td>
+                    <td>
+                        <input class="w3-input w3-border w3-round-large w3-pale-green" type="text" name="insertion_length" id="insertion_length">
+                    </td>
+                </tr> -->
+
+                <tr> <!-- Deletions -->
+                    <td>Deletions</td>
+                    <td>
+                        <label class="w3-validate">
+                            <input class="w3-check" type="checkbox" name="deletion" id="deletion" checked> Include deletions
+                        </label>
+                    </td>
+                </tr>
+
+                <tr> <!-- Deletion Start -->
+                    <td>Deletion Start Position</td>
+                    <td>
+                        <input class="w3-input w3-border w3-round-large w3-pale-green" type="text" name="start_deletion">
+                    </td>
+                </tr>
+
+                <tr> <!-- Deletion End -->
+                    <td>Deletion End Position</td>
+                    <td>
+                        <input class="w3-input w3-border w3-round-large w3-pale-green" type="text" name="end_deletion">
+                    </td>
+                </tr>
+
+                <tr> <!-- Age -->
+                    <td><b>Subjects' Age</b></td>
+                    <td>Search for subjects of a specific age or within a range<br>(E.g.: 26 or 32-52)</td>
+                    <td>
+                        <input class="w3-input w3-border w3-round-large w3-pale-green" type="text" name="age">
+                    </td>
+                </tr>
+
+                <tr> <!-- Sex -->
+                    <td><b>Subjects' Sex</b></td>
+                    <td>Search for subjects of a specific gender</td>
+                    <td>
+                        <label class="w3-validate">
+                            <input class="w3-radio" type="radio" name="sex" value="" checked> All
+                        </label><br>
+                        <label class="w3-validate">
+                            <input class="w3-radio" type="radio" name="sex" value="M"> Male
+                        </label>&nbsp;&nbsp;
+                        <label class="w3-validate">
+                            <input class="w3-radio" type="radio" name="sex" value="F"> Female
+                        </label>
+                    </td>
+                </tr>
+
+                <tr> <!-- Tissue -->
+                    <td><b>DNA Source</b></td>
+                    <td>Search for genomes extracted from a specific tissue type</td>
+                    <td>
+                        <select class="w3-select w3-border w3-pale-green w3-round-large" name="source" id="source">
+                            <option value="" selected>--All Tissues--</option>
+                            {% for s in sources %}
+                            <option value="{{ s[0] }}">{{ s[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+
+                <tr> <!-- Individual Type -->
+                    <td><b>Individual Type</b></td>
+                    <td>Search for genomes healthy, pathologic or correlated to a specific phenotype</td>
+                    <td>
+                        <label class="w3-validate">
+                            <input class="w3-radio" type="radio" name="genome_type" value="" onclick="enableList('disease')" checked> All
+                        </label><br>
+                        <label class="w3-validate">
+                            <input class="w3-radio" type="radio" name="genome_type" value="N" onclick="disableList('disease')"> Healthy
+                        </label>&nbsp;&nbsp;
+                        <label class="w3-validate">
+                            <input class="w3-radio" type="radio" name="genome_type" value="P" onclick="enableList('disease')"> Pathologic
+                        </label><br><br>
+
+                        <select class="w3-select w3-border w3-round-large w3-pale-green" class="sel" name="disease" id="disease" size="4" multiple style="max-width: 20em; overflow: scroll">
+                            {% for d in diseases %}
+                            <option value="{{ d[0] }}">{{ d[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+
+                <tr> <!-- References -->
+                    <td rowspan="3"><b>References</b></td>
+                    <td>Pubmed ID</td>
+                    <td>
+                        <input class="w3-input w3-border w3-round-large w3-pale-green" type="text" name="pubmedId">
+                    </td>
+                </tr>
+
+                <tr> <!-- Journals -->
+                    <td>Journal</td>
+                    <td>
+                        <select class="w3-select w3-border w3-pale-green w3-round-large" name="journal" id="journal">
+                            <option value="" selected>--All Journals--</option>
+                            {% for j in journals %}
+                            <option value="{{ j[0] }}">{{ j[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+
+                <tr> <!-- Authors -->
+                    <td>Authors</td>
+                    <td>
+                        <input class="w3-input w3-border w3-round-large w3-pale-green" type="text" name="author" id="author">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <br /><br />
+
+    <div class="row">
+
+        <div class="col-sm-12 w3-center">
+
+            <input class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-large" type="reset" name="query_reset" value="Reset">&nbsp;
+            <input class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-large" type="submit" name="query_submit" value="Search">
+
+        </div>
+
+    </div>
+
+    </form>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/script.js') }}"></script>
+
+    <script type="text/javascript">
+        // per qualche motivo queste funzioni non vanno se le inserisco nel file .js qui sopra...boh
+
+        function populateCountries(s1, s2) {
+            // inserisce i valori delle countries nella lista country in base al continent selezionato {Query}
+            s1 = document.getElementById(s1);
+            s2 = document.getElementById(s2);
+            var optionArray;
+
+            s2.innerHTML = "--All Countries--";
+
+            if (s1.value == "AF") {
+                optionArray = ["|--All Countries--",
+                "6|Algeria",
+                "7|Angola",
+                "15|Barbados",
+                "22|Botswana",
+                "27|Burkina Faso",
+                "31|Cameroon",
+                "34|Central African Republic",
+                "37|Chad",
+                "43|Congo",
+                "58|Egypt",
+                "61|Eritrea",
+                "63|Ethiopia",
+                "69|Gabon",
+                "70|Gambia",
+                "73|Ghana",
+                "77|Guinea-Bissau",
+                "78|Haiti",
+                "97|Kenya",
+                "106|Libya",
+                "110|Madagascar",
+                "114|Mauritania",
+                "115|Mauritius",
+                "124|Morocco",
+                "125|Mozambique",
+                "127|Namibia",
+                "139|Niger",
+                "140|Nigeria",
+                "172|Sao Tome and Principe",
+                "176|Senegal",
+                "179|Sierra Leone",
+                "183|Somalia",
+                "184|South Africa",
+                "190|Sudan",
+                "196|United Republic of Tanzania",
+                "202|Tunisia",
+                "205|Uganda",
+                "207|Undefined African Country",
+                "228|Western Sahara",
+                "231|Zambia",
+                "232|Zimbabwe", ];
+            } else if (s1.value == "AM") {
+                optionArray = ["|--All Countries--",
+                "4|Alabama",
+                "8|Argentina",
+                "13|Bahamas",
+                "18|Bermuda",
+                "20|Plurinational State of Bolivia",
+                "23|Brazil",
+                "29|California",
+                "32|Canada",
+                "33|Cayman Islands",
+                "39|Chile",
+                "41|Colombia",
+                "45|Costa Rica",
+                "48|Cuba",
+                "52|Delaware",
+                "54|Dominican Republic",
+                "57|Ecuador",
+                "59|El Salvador",
+                "67|Florida",
+                "75|Greenland",
+                "76|Guatemala",
+                "79|Hawai",
+                "83|Illinois",
+                "93|Kansas",
+                "96|Kentuky",
+                "113|Massachusetts",
+                "116|Mexico",
+                "117|Michigan",
+                "119|Minnesota",
+                "120|Missouri",
+                "123|Montana",
+                "128|Nebraska",
+                "132|New Hampshire",
+                "133|New Jersey",
+                "134|New Mexico",
+                "135|New York",
+                "138|Nicaragua",
+                "142|North Carolina",
+                "143|North Dakota",
+                "148|Ohio",
+                "149|Oklahoma",
+                "153|Panama",
+                "155|Paraguay",
+                "156|Pennsylvania",
+                "157|Peru",
+                "162|Puerto Rico",
+                "167|Rhode Island",
+                "185|South Carolina",
+                "186|South Dakota",
+                "197|Tennessee",
+                "198|Texas",
+                "208|Undefined American Country",
+                "215|Uruguay",
+                "216|United States of America",
+                "219|Bolivian Republic of Venezuela",
+                "220|Vermont",
+                "223|Virginia",
+                "226|Washington",
+                "229|Wisconsin", ];
+            } else if (s1.value == "AS") {
+                optionArray = ["|--All Countries--",
+                "2|Afghanistan",
+                "9|Armenia",
+                "12|Azerbaijan",
+                "14|Bangladesh",
+                "25|Brunei Darussalam",
+                "30|Cambodia",
+                "40|China",
+                "56|Timor-Leste",
+                "71|Georgia",
+                "84|India",
+                "85|Indonesia",
+                "86|Islamic Republic of Iran",
+                "87|Iraq",
+                "89|Israel",
+                "91|Japan",
+                "92|Jordan",
+                "95|Kazakhstan",
+                "99|Korea",
+                "101|Kuwait",
+                "102|Kyrgyzstan",
+                "103|Laos People's Democratic Republic",
+                "105|Lebanon",
+                "111|Malaysia",
+                "122|Mongolia",
+                "126|Myanmar",
+                "129|Nepal",
+                "150|Oman",
+                "151|Pakistan",
+                "152|State of Palestine",
+                "158|Philippines",
+                "163|Qatar",
+                "165|Singapore",
+                "173|Saudi Arabia",
+                "188|Sri Lanka",
+                "194|Syrian Arab Republic",
+                "195|Taiwan",
+                "199|Thailand",
+                "203|Turkey",
+                "209|Undefined Asian Country",
+                "213|United Arab Emirates",
+                "217|Uzbekistan",
+                "221|Viet Nam",
+                "230|Yemen", ];
+            } else if (s1.value == "EU") {
+                optionArray = ["|--All Countries--",
+                "5|Albania",
+                "11|Austria",
+                "16|Belarus",
+                "17|Belgium",
+                "21|Bosnia and Herzegovina",
+                "26|Bulgaria",
+                "47|Croatia",
+                "49|Cyprus",
+                "50|Czechia",
+                "53|Denmark",
+                "62|Estonia",
+                "64|Faroe Islands",
+                "66|Finland",
+                "68|France",
+                "72|Germany",
+                "74|Greece",
+                "80|Hungary",
+                "82|Iceland",
+                "88|Ireland",
+                "90|Italy",
+                "104|Latvia",
+                "107|Lithuania",
+                "108|Luxembourg",
+                "109|Macedonia",
+                "112|Malta",
+                "121|Republic of Moldova",
+                "130|Netherlands",
+                "147|Norway",
+                "159|Poland",
+                "161|Portugal",
+                "168|Romania",
+                "170|Russian Federation",
+                "177|Serbia",
+                "180|Slovakia",
+                "181|Slovenia",
+                "187|Spain",
+                "191|Sweden",
+                "192|Switzerland",
+                "206|Ukraine",
+                "211|Undefined European Country",
+                "214|United Kingdom of Great Britain and Northern Ireland", ];
+            } else if (s1.value == "OC") {
+                optionArray = ["|--All Countries--",
+                "10|Australia",
+                "44|Cook Islands",
+                "65|Fiji",
+                "98|Kiribati",
+                "118|Federal States of Micronesia",
+                "136|New Zealand",
+                "141|Niue",
+                "154|Papua New Guinea",
+                "160|French Polynesia",
+                "171|Samoa",
+                "182|Solomon Islands",
+                "201|Tonga",
+                "204|Tuvalu",
+                "212|Undefined Oceanian Country",
+                "218|Vanuatu",
+                "225|Wallis and Futuna", ];
+            }
+
+            for (var option in optionArray) {
+                var pair = optionArray[option].split("|");
+                var newOption = document.createElement("option");
+
+                newOption.value = pair[0];
+                newOption.innerHTML = pair[1];
+                s2.options.add(newOption);
+            }
+        }
+
+        // todo: inserire haplogroups direttamente qui, che cazzo succede boh
+
+        function uncheckTrans(el) {
+            // rimuove il check dal checkbox per le transizioni o le transversioni
+            el = document.getElementById(el);
+
+            if (el.checked) {
+                el.checked = false;
+            }
+        }
+
+        function disableList(s1) {
+            // disabilita la lista delle disease nel caso in cui siano selezionati individui healthy {Query}
+            s1 = document.getElementById(s1);
+
+            s1.disabled=true;
+        }
+
+        function enableList(s1) {
+            // abilita la lista delle disease nel caso non siano selezionati individui healthy {Query}
+            s1 = document.getElementById(s1);
+
+            s1.disabled=false;
+        }
+    </script>
+
+{% endblock %}
+
+

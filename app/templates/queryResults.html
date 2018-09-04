@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">HmtDB Query Results</h3>
+
+            <p class="paragraphs w3-padding">Your query has returned <strong>{{ numResults }}</strong> records. For further information on one or more specific genomes please click on the appropriate links in the following table.</p>
+
+            <div class="w3-container w3-center">
+
+                <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-medium" name="Back" onclick="location.href='{{ url_for('site.queryCriteria') }}'">Back to Query HmtDB</button>
+
+            </div>
+
+            <br />
+
+            <!-- Table -->
+            <table class="table" cellspacing="0" cellpadding="0">
+
+                <thead>
+                <tr class="w3-light-blue w3-text-indigo w3-large">
+                    <!--<th class="w3-padding w3-center" style="vertical-align: middle; width: 8em;">Select All<br><input type="checkbox" id="select_all"></th>-->
+                    <th class="w3-padding w3-center" style="width: 12em;">HmtDB Genome Identifier</th>
+                    <th class="w3-padding w3-center" style="width: 12em;">Reference DB Source Identifier</th>
+                    <th class="w3-padding w3-center">References</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for el in results %}
+                    <tr>
+                        <!--<td class="w3-center" style="vertical-align: middle;">
+                            <input type="checkbox" class="w3-check" name="chk_genome" id="chk_genome" value="{{ el.genomeId }}">
+                        </td>-->
+                        <td class="w3-center">
+                            <a href="{{ url_for('site.genomeCard', idGenome=el.genomeId) }}" target="_blank" title="Show Genome Card">{{ el.haplotypeHmdb }}</a>
+                        </td>
+                        <td class="w3-center">
+                            {% if el.referenceDb == "Genbank" %}
+                            <a href="http://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?val={{ el.referenceDbId }}" target="_blank" title="Reference DB Entry">{{ el.referenceDbId }}</a>
+                            {% elif el.referenceDb == '1KGenomes' %}
+                            <a href="http://www.internationalgenome.org/data-portal/sample/{{ el.referenceDbId }}" target="_blank" title="Reference DB Entry">{{ el.referenceDbId }}</a>
+                            {% else %}
+                            {{ el.referenceDbId }}
+                            {% endif %}
+                        </td>
+                        <td class="w3-center" style="max-width: 20em">
+                            {% for ref in el.references.all() %}
+
+                                {% if ref.author != None %}
+                                {{ ref.author }}<br>
+                                {% endif %}
+                                {% if ref.title != None %}
+                                {{ ref.title }} <br>
+                                {% endif %}
+
+{#                                {% if ref.paper != "NULL" %}#}
+{#                                {{ ref.paper }}#}
+{#                                {% endif %}#}
+{#                                {% if ref.year != "NULL" %}#}
+{#                                {{ ref.year }}#}
+{#                                {% endif %}#}
+{#                                {% if ref.volume != "NULL" %}#}
+{#                                {{ ref.volume }}#}
+{#                                {% endif %}#}
+{#                                {% if ref.issue != "NULL" %}#}
+{#                                {{ ref.issue }}#}
+{#                                {% endif %}#}
+{#                                {% if ref.firstPage != "NULL" %}#}
+{#                                {{ ref.firstPage }}#}
+{#                                {% endif %}#}
+
+                                {% if ref.pubmedId != None %}
+                                    [<a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=pubmed&amp;dopt=Abstract&amp;list_uids={{ ref.pubmedId }}" target="_blank" title="Reference">{{ ref.pubmedId }}</a>]
+                                {% else %}
+                                    Unpublished
+                                {% endif %}
+                                <br>
+
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <br />
+
+    <div class="row">
+
+        <div class="col-sm-12 w3-center">
+            <label class="w3-validate">
+                <input class="w3-check" type="checkbox" name="chk_genome_anderson" id="chk_genome_anderson" checked> Include the RSRS Reference Sequence in the alignments
+            </label>
+            {# todo: rimettere la possibilità di scaricare le sequenze (magari solo le sequenze, no multiallineamento) #}
+            <br /><br />
+            <!--<input type="button" class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-small" name="btn3" onclick="javascript:document.location.href='<%=BioConstantBean.htmlJSPHome + BioConstantBean.ViewGenomeCardJsp + BioConstantBean.jspExt%>?selectValue='+buildSelectedList()" value="View Genome Cards">
+            <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-small" name="btn1" onclick="javascript:formsubmit2('true', 'sequences')">Download Sequences</button>
+            <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-small" name="btn1" onclick="javascript:formsubmit2('true', 'alignment')">Download Alignment</button>-->
+            <br />
+            <p class="paragraphs_noind">In order to view and edit alignments, we suggest you download the latest version of the <a href="http://www.ormbunkar.se/aliview/">AliView</a> software.</p>
+            <br>
+
+            <div class="w3-container w3-center">
+
+                <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-medium" name="Back" onclick="location.href='{{ url_for('site.queryCriteria') }}'">Back to Query HmtDB</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">HmtDB Variant Card</h3>
+
+            <p class="paragraphs w3-padding">Information available for variant {{ from_nt }}{{ position }}{{ to_nt }}. </p>
+
+            <div class="row">
+
+                <h5 class="main_titles">Variant's Data</h5>
+                <table class="table" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr class="w3-light-blue w3-text-indigo w3-medium">
+                            <th class="w3-padding-large w3-center">Position</th>
+                            <th class="w3-padding-large w3-center">Mutation</th>
+                            <th class="w3-padding-large w3-center">Locus</th>
+                            <th class="w3-padding-large w3-center">Disease Score</th>
+                            <th class="w3-padding-large w3-center">Pathogenicity</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="w3-padding-large w3-center">
+                            <td class="w3-padding-large w3-center">{{ position }}</td>
+                            <td class="w3-padding-large w3-center">{{ from_nt }} &rarr; {{ to_nt }}</td>
+                            <td class="w3-padding-large w3-center">{{ locus }}</td>
+                            <td class="w3-padding-large w3-center">{{ dis_score }}</td>
+                            <td class="w3-padding-large w3-center">
+                                {% if pathogen == "pathogenic" %}
+                                Pathogenic
+                                {% elif pathogen == "polymorphic" %}
+                                Polymorphic
+                                {% elif pathogen == "likely_pathogenic" %}
+                                Likely Pathogenic
+                                {% elif pathogen == "likely_polymorphic" %}
+                                Likely Polymorphic
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p class="paragraphs w3-padding">Pathogenicity data are provided by <a href="https://www.hmtvar.uniba.it/varCard/{{ varId }}" title="HmtVar" target="_blank">HmtVar</a>.</p>
+
+            </div>
+
+            <br>
+
+            <div class="row">
+
+                <div class="col-sm-6">
+
+                    <h5 class="main_titles">Nucleotide Variability</h5>
+                    <table class="table" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr class="w3-light-blue w3-text-indigo w3-medium">
+                                <th class="w3-padding-large w3-center">Healthy</th>
+                                <th class="w3-padding-large w3-center">Patients</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr class="w3-padding-large w3-center">
+                                <td class="w3-padding-large w3-center">{{ nt_var_h }}</td>
+                                <td class="w3-padding-large w3-center">{{ nt_var_p }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="col-sm-6">
+
+                    <h5 class="main_titles">Aminoacid Variability</h5>
+                    <table class="table" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr class="w3-light-blue w3-text-indigo w3-medium">
+                                <th class="w3-padding-large w3-center">Healthy</th>
+                                <th class="w3-padding-large w3-center">Patients</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr class="w3-padding-large w3-center">
+                                <td class="w3-padding-large w3-center">{{ aa_var_h }}</td>
+                                <td class="w3-padding-large w3-center">{{ aa_var_p }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}

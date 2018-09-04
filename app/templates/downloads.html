@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">Download HmtDB Data</h3>
+
+            <p class="paragraphs w3-padding">Here you can download multialignments and site variability data of both healthy and pathologic datasets as well as continent-specific datasets.</p>
+
+            <div class="row">
+
+                <div class="col-sm-1"></div>
+
+                <!-- Multialignments -->
+
+                <div class="col-sm-5">
+                <div class="panel">
+
+                    <div class="panel-heading w3-light-blue w3-center">
+                        <h4 class="main_titles_noind">Multialignments</h4>
+                    </div>
+
+                    <div class="panel-body">
+                    <div class="row">
+
+                        <!-- Healthy -->
+
+                        <div class="col-sm-6 w3-center">
+
+                            <h5 class="main_titles_noind">Healthy</h5>
+
+                            <p><a href="{{ url_for('site.download_file', dataset='alg_tot.zip', user=current_user) }}" title="Alg_Tot">All Database</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='alg_AF.zip', user=current_user) }}" title="Alg_AF">Africa</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='alg_AM.zip', user=current_user) }}" title="Alg_AM">America</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='alg_AS.zip', user=current_user) }}" title="Alg_AS">Asia</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='alg_EU.zip', user=current_user) }}" title="Alg_EU">Europe</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='alg_OC.zip', user=current_user) }}" title="Alg_OC">Oceania</a></p>
+
+                        </div>
+
+                        <!-- Patho -->
+
+                        <div class="col-sm-6 w3-center">
+
+                            <h5 class="main_titles_noind">Pathologic</h5>
+
+                            <p><a href="{{ url_for('site.download_file', dataset='alg_pa_tot.zip', user=current_user) }}" title="Alg_Pa_Tot">All Database</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='alg_pa_AF.zip', user=current_user) }}" title="Alg_Pa_AF">Africa</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='alg_pa_AM.zip', user=current_user) }}" title="Alg_Pa_AM">America</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='alg_pa_AS.zip', user=current_user) }}" title="Alg_Pa_AS">Asia</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='alg_pa_EU.zip', user=current_user) }}" title="Alg_Pa_EU">Europe</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='alg_pa_OC.zip', user=current_user) }}" title="Alg_Pa_OC">Oceania</a></p>
+
+                        </div>
+
+                    </div>
+                    </div>
+
+                </div>
+                </div>
+
+                <!-- Variability -->
+
+                <div class="col-sm-5">
+                <div class="panel">
+
+                    <div class="panel-heading w3-light-blue w3-center">
+                        <h4 class="main_titles_noind">Site Variability Tables</h4>
+                    </div>
+
+                    <div class="panel-body">
+                    <div class="row">
+
+                        <!-- Healthy -->
+
+                        <div class="col-sm-6 w3-center">
+
+                            <h5 class="main_titles_noind">Healthy</h5>
+
+                            <p><a href="{{ url_for('site.download_file', dataset='var_tot.zip', user=current_user) }}" title="Var_Tot">All Database</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='var_AF.zip', user=current_user) }}" title="Var_AF">Africa</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='var_AM.zip', user=current_user) }}" title="Var_AM">America</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='var_AS.zip', user=current_user) }}" title="Var_AS">Asia</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='var_EU.zip', user=current_user) }}" title="Var_EU">Europe</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='var_OC.zip', user=current_user) }}" title="Var_OC">Oceania</a></p>
+
+                        </div>
+
+                        <!-- Patho -->
+
+                        <div class="col-sm-6 w3-center">
+
+                            <h5 class="main_titles_noind">Pathologic</h5>
+
+                            <p><a href="{{ url_for('site.download_file', dataset='var_pa_tot.zip', user=current_user) }}" title="Var_Pa_Tot">All Database</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='var_pa_AF.zip', user=current_user) }}" title="Var_Pa_AF">Africa</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='var_pa_AM.zip', user=current_user) }}" title="Var_Pa_AM">America</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='var_pa_AS.zip', user=current_user) }}" title="Var_Pa_AS">Asia</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='var_pa_EU.zip', user=current_user) }}" title="Var_Pa_EU">Europe</a></p>
+                            <p><a href="{{ url_for('site.download_file', dataset='var_pa_OC.zip', user=current_user) }}" title="Var_Pa_OC">Oceania</a></p>
+
+                        </div>
+
+                    </div>
+                    </div>
+
+                </div>
+                </div>
+
+                <div class="col-sm-1"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}

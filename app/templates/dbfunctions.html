@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">Database Functions</h3>
+
+            <p class="paragraphs w3-padding">Upon accessing HmtDB a web page introduces the user to the resources available via the top links. A click on <i>Access HmtDB</i> displays a main menu. The menu macro-functions are:
+                <ul>
+                    <li><a href="#query">Query HmtDB</a></li>
+                    <li><a href="#mtoolbox">MToolBox</a></li>
+                    <li><a href="#download">HmtDB Download</a></li>
+                </ul>
+            </p>
+
+            <!-- Query HmtDB -->
+            <a href="#" name="query"></a>
+            <h4 class="main_titles">Query HmtDB</h4>
+
+            <p class="paragraphs w3-padding">The query function allows users to retrieve data from HmtDB. This retrieval is performed according to an advanced search system carried out through the Boolean combination of different criteria, corresponding to the fields defined in the design of the database; the table below summarizes the whole set of criteria.</p>
+            <p class="paragraphs w3-padding">The retrieval output displays a list briefly describing the retrieved genomes. With a click on the <i>Database Source Identifier</i>, as well as on the <i>Pubmed ID</i>, the user can access to the NCBI link that allows the display of both the GenBank entry and the reference abstract. A click on the <i>HmtDB Identifier</i> displays the associated genome card. Multiple genomes may be browsed at once by selecting them through the left square, and then by clicking on <i>View Genome Cards</i> displayed on the bottom of the page. Both multi-alignments and sequences of the selected genomes can be downloaded; when downloading multi-alignments data, both the download of the rCRS reference sequence and the use of SeaView editor are suggested.</p>
+
+            <p class="paragraphs w3-padding"><b><i>List and description of criteria that may be combined when using the HmtDB retrieval system</i></b></p>
+
+            <!-- Table -->
+            <table class="table" cellspacing="0" cellpadding="0" style="box-shadow: 0px 5px 12px 2px #88889A;">
+                <thead>
+                    <tr class="w3-light-blue w3-text-indigo w3-medium">
+                        <th class="w3-padding-large" style="min-width: 20em;">Query criteria</th>
+                        <th class="w3-padding-large">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>HmtDB Genome Identifier</b></td>
+                        <td>A pop up menu allows to select a genome whose HmtDB genome identifier is known</td>
+                    </tr>
+                    <tr>
+                        <td><b>Reference DB Identifier</b></td>
+                        <td>A pop up menu allows to select a genome whose INSDC Accession number is known</td>
+                    </tr>
+                    <tr>
+                        <td><b>Subject's Geographical Origin</b></td>
+                        <td>A pop up menu allows to select genomes whose associated subject belongs to a specific continent/country</td>
+                    </tr>
+                    <tr>
+                        <td><b>Haplogroup User Code</b></td>
+                        <td>A pop up menu allows to select genomes matching a specific haplogroup as it has been assigned in the associated paper<sup>*</sup></td>
+                    </tr>
+                    <tr>
+                        <td><b>Complete Genomes/Only Coding Regions</b></td>
+                        <td>Allows to select either complete genomes or genomes not inclusive of the D-loop region</td>
+                    </tr>
+                    <tr>
+                        <td><b>SNP Position</b></td>
+                        <td>Position of the rCRS reference sequence in which the selected genomes present a mutation</td>
+                    </tr>
+                    <tr>
+                        <td><b>Variation Type</b></td>
+                        <td>In addition to the position search, it is possible to search for genomes whose selected position reports transitions or transversions only, and to search for a specific transition or transversion. It is also possible to search for genomes reporting insertions and/or deletions in specific positions</td>
+                    </tr>
+                    <tr>
+                        <td><b>Subject's Age</b></td>
+                        <td>Genomes whose related subject had a specific age at sampling time</td>
+                    </tr>
+                    <tr>
+                        <td><b>Subject's Sex</b></td>
+                        <td>Genomes from subjects of a specific gender</td>
+                    </tr>
+                    <tr>
+                        <td><b>DNA Source</b></td>
+                        <td>Genomes sequenced from samples extracted from a specific tissue</td>
+                    </tr>
+                    <tr>
+                        <td><b>Individual Type</b></td>
+                        <td>Genomes from <i>healthy</i> or <i>pathologic</i> datasets or from a phenotype related to a specific disease</td>
+                    </tr>
+                    <tr>
+                        <td><b>References</b></td>
+                        <td>Allows to select genomes related to a specific paper or to papers published from a specific author, as well as a genome identified in the paper with a specific haplotype code</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="paragraphs w3-padding"><sup>*</sup>The Haplogroup User Code may not match the haplogroup predicted by the application of the classifier tool, because the former was assigned when the genome was published, while the latter is assigned according to the last update of Phylotree. The Haplogroup User Code reports thus both the user assigned and the "best predicted" haplogroups, the latter obtained by applying the mt-classifier stand-alone version. The two codes are separated by a /.</p>
+
+            <h5 class="main_titles">Genomes classification</h5>
+
+            <p class="paragraphs w3-padding">The classification procedure is performed on every genome stored on HmtDB, and allows the prediction of its haplogroup on the basis of the classification available through Phylotree. It consists in the automatic comparison between a single human mitochondrial genome (query) and the RSRS reference sequence, with the aim of detecting the pattern of mtDNA SNPs in the query genome. The comparison is based on the MUSCLE software. Upon matching an obtained pattern against the Phylotree haplogroup classification stored in HmtDB, the prediction of the query sequence haplogroup may be performed. A genome card of the subject genome is generated and displayed; haplogroup prediction is expressed as a list of haplogroups for which a match was found, and for each haplogroup a percentage of the detected variations with respect to the total number of variations defining the haplogroup is given (with a threshold of 95%).</p>
+
+            <br />
+
+            <div class="w3-center">
+
+                <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-large" name="Query" onclick="location.href='{{ url_for('site.queryCriteria') }}'">Go to Query HmtDB</button>
+
+            </div>
+
+            <!-- MToolBox -->
+            <a href="#" name="mtoolbox"></a>
+            <h4 class="main_titles">MToolBox</h4>
+
+            <p class="paragraphs w3-padding">MToolBox is an automated pipeline that was developed in order to analyze human mtDNA from High-Throughput Sequencing data, with customizable parameters and capable of analysing multiple samples in a single run. MToolBox outputs a VCF file, a standard format for large-scale genotyping information, suitably customized for mitochondrial data, by including the heteroplasmy fraction as well as its related confidence interval. MToolBox also provides users with essential analysis of reconstructed mitochondrial genomes, e.g. haplogroup assignment and variant prioritization, exploiting a broad collection of annotation resources, thus providing a valuable support for the recognition of candidate mitochondrial mutations in clinical studies. Complete reference can be found <a href="https://bioinformatics.oxfordjournals.org/content/30/21/3115.long" target="_blank" title="MToolBox Reference">here</a>.</p>
+
+            <p class="paragraphs w3-padding">MToolBox is both available as a command-line stand-alone (accessible on <a href="https://github.com/mitoNGS/MToolBox" target="_blank" title="MToolBox on GitHub">MToolBox - GitHub</a>) as well as through a graphical-interface web version hosted on MSeqDR website (accessible on <a href="https://mseqdr.org/mtoolbox.php" target="_blank" title="MToolBox on MSeqDR">MtoolBox - MSeqDR</a>).</p>
+
+            <br />
+
+            <div class="w3-center">
+
+                <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-large" name="Query" onclick="location.href='{{ url_for('site.mtoolbox') }}'">Go to MToolBox</button>
+
+            </div>
+
+            <!-- Download -->
+            <a href="#" name="download"></a>
+            <h4 class="main_titles">HmtDB Download</h4>
+
+            <p class="paragraphs w3-padding">The downloading function allows the download of both MAs of the entire <i>healthy</i> and <i>pathologic</i> samples as well as continent-specific datasets and variability data obtained by applying the <a href="{{ url_for('site.siteVariability') }}" title="Site Variability">SiteVar/MitVarProt</a> software.</p>
+
+            <br />
+
+            <div class="w3-center">
+
+                <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-large" name="Query" onclick="location.href='{{ url_for('site.downloads') }}'">Go to HmtDB Download</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}

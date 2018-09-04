@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+    
+    <div class="row">
+    
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">Aa Site Variability</h3>
+
+            <br />
+
+            <table class="table" cellpadding="0" cellspacing="0">
+
+                <thead>
+                <tr class="w3-light-blue w3-text-indigo w3-small">
+                    <th class="w3-center">AA Position</th>
+                    <th class="w3-center">Gene Name</th>
+                    <th class="w3-center">Individual Type</th>
+                    <th class="w3-center">Intrahumans Var.</th>
+                    <th class="w3-center">Intermammals Var.</th>
+                    <th class="w3-center">African Var.</th>
+                    <th class="w3-center">American Var.</th>
+                    <th class="w3-center">Asian Var.</th>
+                    <th class="w3-center">European Var.</th>
+                    <th class="w3-center">Oceanian Var.</th>
+                </tr>
+                </thead>
+            
+                <tbody>
+                <tr>
+                    <td rowspan="2" class="w3-center">{{ aaPos }}</td>
+                    <td rowspan="2" class="w3-center">{{ gene }}</td>
+
+                    {% if aaVarN %}
+
+                        <td class="w3-center">&nbsp;Normal</td>
+
+                        {% if aaVarN.varAa_intrahs %}
+                            <td class="w3-center">{{ aaVarN.varAa_intrahs|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                        {% if aaVarN.varAa_intermam %}
+                            <td class="w3-center">{{ aaVarN.varAa_intermam|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                        {% if aaVarN.varAa_af %}
+                            <td class="w3-center">{{ aaVarN.varAa_af|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                        {% if aaVarN.varAa_am %}
+                            <td class="w3-center">{{ aaVarN.varAa_am|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                        {% if aaVarN.varAa_as %}
+                            <td class="w3-center">{{ aaVarN.varAa_as|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                        {% if aaVarN.varAa_eu %}
+                            <td class="w3-center">{{ aaVarN.varAa_eu|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                        {% if aaVarN.varAa_oc %}
+                            <td class="w3-center">{{ aaVarN.varAa_oc|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                    {% endif %}
+
+                </tr>
+                <tr>
+
+                    {% if aaVarP %}
+
+                        <td class="w3-center">Patient</td>
+
+                        {% if aaVarP.varAa_intrahs %}
+                            <td class="w3-center">{{ aaVarP.varAa_intrahs|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                        {% if aaVarP.varAa_intermam %}
+                            <td class="w3-center">{{ aaVarP.varAa_intermam|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                        {% if aaVarP.varAa_af %}
+                            <td class="w3-center">{{ aaVarP.varAa_af|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                        {% if aaVarP.varAa_am %}
+                            <td class="w3-center">{{ aaVarP.varAa_am|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                        {% if aaVarP.varAa_as %}
+                            <td class="w3-center">{{ aaVarP.varAa_as|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                        {% if aaVarP.varAa_eu %}
+                            <td class="w3-center">{{ aaVarP.varAa_eu|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                        {% if aaVarP.varAa_oc %}
+                            <td class="w3-center">{{ aaVarP.varAa_oc|round(3) }}</td>
+                        {% else %}
+                            <td class="w3-center">0.0</td>
+                        {% endif %}
+
+                    {% endif %}
+
+                </tr>
+                </tbody>
+
+            </table>
+
+            <br><br>
+
+            <div class="w3-container w3-center">
+
+                <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-medium" name="Close" onclick="location.href='javascript:window.close()'">Back to HmtDB</button>
+
+            </div>
+
+        </div>
+    
+    </div>
+    
+    </div>
+
+    {{ super() }}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">What's new in HmtDB</h3>
+
+            <p class="paragraphs w3-padding">Last updating release of HmtDB database: <b>{{ latest_update }}</b>.</p>
+            <p class="paragraphs w3-padding">The number of collected genomes and their related data are available on the <a href="{{ url_for("site.stats") }}" title="Statistics">Statistics</a> page.</p>
+            <p class="paragraphs w3-padding">The haplogroup prediction is based on the RSRS reference sequence and Phylotree <a href="http://www.phylotree.org/builds/mtDNA_tree_Build_17.zip" title="Download mtDNA tree Build 17" target="_blank">mtDNA tree Build 17</a> (18 Feb 2016).</p>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}

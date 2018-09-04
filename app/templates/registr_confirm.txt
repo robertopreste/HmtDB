@@ -1,0 +1,8 @@
+Dear {{ first_name }},
+
+Your registration request for user {{ username }} has been approved.
+You may now login to HmtDB and download our data using your username and password.
+
+Best regards,
+
+HmtDB

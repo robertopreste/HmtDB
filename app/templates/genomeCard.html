@@ -1,0 +1,505 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">HmtDB Genome Card</h3>
+
+                <!-- Main Information -->
+                <div class="row">
+
+                    <div class="col-sm-1">&nbsp;</div>
+
+                    <div class="col-sm-5">
+                        <h6><b>Identifier: </b><span>
+                            {{ genome.haplotypeHmdb }}
+                        </span></h6>
+                        {% if genome.haplotypeHmdb != "NULL" %}
+                        <h6><b>Reference DB: </b><span>{{ genome.referenceDb }}</span></h6>
+                        <h6><b>Reference DB Source Id: <span>
+                            {% if genome.referenceDb == "Genbank" %}
+                            <a href="http://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?val={{ genome.referenceDbId }}" target="_blank" title="Reference DB Entry">{{ genome.referenceDbId }}</a>
+                            {% elif genome.referenceDb == '1KGenomes' %}
+                            <a href="http://www.internationalgenome.org/data-portal/sample/{{ genome.referenceDbId }}" target="_blank" title="Reference DB Entry">{{ genome.referenceDbId }}</a>
+                            {% else %}
+                            {{ genome.referenceDbId }}
+                            {% endif %}
+                            </span></b></h6>
+
+                        {% if genome.haplogroupHmdb != None %}
+                            <h6><b>HmtDB Assigned Haplogroup: </b><span>{{ genome.haplogroupHmdb }}</span></h6>
+                        {% else %}
+                            <h6><b>HmtDB Assigned Haplogroup: </b><span>Undefined</span></h6>
+                        {% endif %}
+
+                        {% if genome.haplogroupUser != None %}
+                            <h6><b>Author Assigned Haplogroup: </b><span>{{ genome.haplogroupUser }}</span></h6>
+                        {% else %}
+                            <h6><b>Author Assigned Haplogroup: </b><span>Undefined</span></h6>
+                        {% endif %}
+
+                        {% if genome.haplotypeUser != None %}
+                            <h6><b>Haplotype User Code: </b><span>{{ genome.haplotypeUser }}</span></h6>
+                        {% else %}
+                            <h6><b>Haplotype User Code: </b><span>Undefined</span></h6>
+                        {% endif %}
+
+                    </div>
+
+                    <div class="col-sm-5">
+                        <h6><b>Genome Length: </b><span>{{ genome.endPosition - genome.startPosition }}</span>
+                            {% if genome.completeGenome == "Y" %}
+                            - complete genome</h6>
+                            {% else %}
+                            <h6><b>Start Position: </b><span>{{ genome.startPosition }}</span></h6>
+                            <h6><b>End Position: </b><span>{{ genome.endPosition }}</span></h6>
+                            {% endif %}
+
+                        {% if genome.sourceId != None and genome.sourceId != 299 %}
+                        <h6><b>Source: </b><span>{{ source.sourceName }}</span></h6>
+                        {% else %}
+                        <h6><b>Source: </b><span>Undefined</span></h6>
+                        {% endif %}
+
+                        {% if method != None %}
+                            <h6><b>Sequencing Method: </b><span>{{ method.methodName }}</span></h6>
+                        {% else %}
+                            <h6><b>Sequencing Method: </b><span>Undefined</span></h6>
+                        {% endif %}
+
+                        <h6><b>References: </b>
+                            {% if genome.referenceId != "NULL" and num_refs > 0 %}
+                                {% for el in refs %}
+                                    {% if el.author != None %}
+                                    <span>{{ el.author }}</span><br />
+                                    {% endif %}
+
+                                    {% if el.title != None %}
+                                    <span>{{ el.title }}</span><br />
+                                    {% endif %}
+
+{#                                    {% if el.paper != "NULL" %}#}
+{#                                    <span>{{ el.paper }}</span>#}
+{#                                    {% endif %}#}
+{##}
+{#                                    {% if el.year != "NULL" %}#}
+{#                                    <span>{{ el.year }}</span>#}
+{#                                    {% endif %}#}
+{##}
+{#                                    {% if el.volume != "NULL" %}#}
+{#                                    <span>{{ el.volume }}</span>#}
+{#                                    {% endif %}#}
+{##}
+{#                                    {% if el.issue != "NULL" %}#}
+{#                                    <span>{{ el.issue }}</span>#}
+{#                                    {% endif %}#}
+{##}
+{#                                    {% if el.firstPage != "NULL" %}#}
+{#                                    <span>{{ el.firstPage }}</span>#}
+{#                                    {% endif %}#}
+
+                                    {% if el.pubmedId != None %}
+                                    <span>[<a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=pubmed&amp;dopt=Abstract&amp;list_uids={{ el.pubmedId }}" target="_blank" title="Reference">{{ el.pubmedId }}</a>]</span>
+                                    {% else %}
+                                    <span>Unpublished</span>
+                                    {% endif %}
+                                    <br />
+                                {% endfor %}
+                            {% else %}
+                                <span>Unpublished</span>
+                            {% endif %}
+                        </h6>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-sm-1">&nbsp;</div>
+
+                </div>
+
+                <!-- Individual Table -->
+                {% if genome.haplotypeHmdb != "NULL" %}
+                    <h5 class="main_titles">Individual's Data</h5>
+                    <table class="table" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr class="w3-light-blue w3-text-indigo w3-medium">
+                                <th class="w3-padding-large w3-center">Continent</th>
+                                <th class="w3-padding-large w3-center">Country</th>
+                                <th class="w3-padding-large w3-center">Ethnic Group</th>
+                                <th class="w3-padding-large w3-center">Age</th>
+                                <th class="w3-padding-large w3-center">Sex</th>
+                                <th class="w3-padding-large w3-center">Phenotype</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr class="w3-padding-large w3-center">
+                                {% if country.continentName != "Undefined Continent" %}
+                                    <td class="w3-padding-large w3-center">{{ country.continentName }}</td>
+                                {% else %}
+                                    <td class="w3-padding-large w3-center">Undefined</td>
+                                {% endif %}
+
+                                {% if country.countryName != "Undefined Country" %}
+                                    <td class="w3-padding-large w3-center">{{ country.countryName }}</td>
+                                {% else %}
+                                    <td class="w3-padding-large w3-center">Undefined</td>
+                                {% endif %}
+
+                                {% if ethnic.groupName != None %}
+                                    <td class="w3-padding-large w3-center">{{ ethnic.groupName }}</td>
+                                {% else %}
+                                    <td class="w3-padding-large w3-center">Undefined</td>
+                                {% endif %}
+
+                                {% if indiv.age != None %}
+                                    <td class="w3-padding-large w3-center">{{ indiv.age }}</td>
+                                {% else %}
+                                    <td class="w3-padding-large w3-center">Undefined</td>
+                                {% endif %}
+
+                                {% if indiv.sex != None %}
+                                    <td class="w3-padding-large w3-center">{{ indiv.sex }}</td>
+                                {% else %}
+                                    <td class="w3-padding-large w3-center">Undefined</td>
+                                {% endif %}
+
+                                <td class="w3-padding-large w3-center">
+                                    {% if indiv.individualType == "P" %}
+                                        Patient
+                                        {% if indiv.diseases != "NULL" %}
+                                            - {{ disease.diseaseName }}
+                                        {% endif %}
+                                    {% elif indiv.individualType == "N" %}
+                                        Normal
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                {% endif %}
+
+                <br /><br />
+
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <h5 class="main_titles" style="margin-bottom: 25px;">Variants' Data</h5>
+                    </div>
+
+                    <!-- Color Legend -->
+                    <div class="col-sm-8">
+                        <table class="table" style="font-size: 0.8em; margin-top: 12px;" cellspacing="0" cellpadding="0">
+                            <thead>
+                            <tr>
+                                <th class="w3-padding-large w3-center colSyn" style="min-width: 7em;">synonymous</th>
+                                <th class="w3-padding-large w3-center colNonSyn" style="min-width: 7em;">non-synonymous</th>
+                                <th class="w3-padding-large w3-center colDloop" style="min-width: 7em;">d-loop</th>
+                                <th class="w3-padding-large w3-center colRna" style="min-width: 7em;">rna</th>
+                                <th class="w3-padding-large w3-center colNonCod" style="min-width: 7em;">non coding</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- Variability table -->
+                <table class="table" cellpadding="0" cellspacing="0">
+
+                    <thead>
+                    <tr class="w3-light-blue w3-text-indigo w3-medium">
+                        <th colspan="5" class="w3-padding-large w3-center" style="border-right: 4px solid #DAE9FF;">Mutations vs RSRS</th>
+                        <th colspan="7" class="w3-padding-large w3-center">Site-specific Variability Data</th>
+                    </tr>
+                    <tr class="w3-light-blue w3-text-indigo w3-small">
+                        <th class=" w3-center">Mutation Position</th>
+                        <th class=" w3-center">Mutation Type</th>
+                        <th class=" w3-center">AA Position</th>
+                        <th class=" w3-center">AA Change</th>
+                        <th class=" w3-center" style="border-right: 4px solid #DAE9FF;">Locus Name</th>
+                        <th class=" w3-center">Human NT Site Variability Normal</th>
+                        <th class=" w3-center">Human NT Site Variability Patient</th>
+                        <th class=" w3-center">Human AA Site Variability Normal</th>
+                        <th class=" w3-center">Human AA Site Variability Patient</th>
+                        <th class=" w3-center">AA Variability InterMammals</th>
+                        <th class=" w3-center">Disease Associations (Mitomap)</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% if num_snps > 0 %}
+
+                        {% for snp in snps %}
+
+                            {% set locus = queryLocus(snp.snpPosition) %}
+                            {% set locus_nomt = locus.geneName.split("-")[1] %}
+                            {% set nt_var_n = queryNtVar_N(snp) %}
+                            {% set nt_var_p = queryNtVar_P(snp) %}
+
+                            {% if locus.locusType == "dloop" %}
+
+                                {% set classStr = "colDloop" %}
+
+                            {% elif locus.locusType == "non coding" or locus.locusType == "oriL" %}
+
+                                {% set classStr = "colNonCod" %}
+
+                            {% elif locus.locusType == "tRNA" or locus.locusType == "rRNA" %}
+
+                                {% set classStr = "colRna" %}
+
+                            {% else %}
+
+                                {% set locus_length = locus.endPosition - locus.startPosition + 1 %}
+                                {% set snp_pos = snp.snpPosition - locus.startPosition + 1 %}
+                                {% set snp_aa_pos = ((snp.snpPosition - locus.startPosition) // 3) + 1 %}
+                                {% set mitoDna = queryMitomapDna(snp) %}
+                                {% set mitoAa = queryMitomapAa(snp_aa_pos, locus) %}
+                                {% set aa_var_n = queryAaVar_N(snp_aa_pos, locus) %}
+                                {% set aa_var_p = queryAaVar_P(snp_aa_pos, locus) %}
+                                {% set snpAa = getAa(getAltCodon(locus, snp_pos, snp)) %}
+                                {% set refAa = locus.rcrsAaSeq[snp_aa_pos - 1] %}
+
+                                {% if refAa != snpAa %}
+
+                                    {% set classStr, aaChangeStr = "colNonSyn", refAa + " &#8594; "|safe + snpAa %}
+
+                                {% else %}
+
+                                    {% set classStr, aaChangeStr = "colSyn", "Syn(" + locus.rcrsAaSeq[snp_aa_pos - 1] + ")" %}
+
+                                {% endif %}
+
+                            {% endif %}
+
+                            <tr class="{{ classStr }}">
+
+                                <td class="w3-center">{{ snp.snpPosition }}</td>
+                                <td class="w3-center">{{ snp.rcrsType }} &#8594; {{ snp.snpType }}</td>
+                                <td class="w3-center">{{ snp_aa_pos }}</td>
+                                <td class="w3-center">{{ aaChangeStr }}</td>
+{#                                <td class="w3-center" style="border-right: 4px solid #DAE9FF;">{{ locus.geneName }}</td>#}
+                                <td class="w3-center" style="border-right: 4px solid #DAE9FF;">{{ locus_nomt }}</td>
+
+                                <td class="w3-center">
+
+                                {% if nt_var_n %}
+
+                                    <a href="{{ url_for('site.ntSitevar', ntPos=snp.snpPosition) }}" target="_blank">{{ nt_var_n.var_tot|round(3) }}</a>
+
+                                {% endif %}</td>
+
+                                <td class="w3-center" style="vertical-align: middle;">
+
+                                {% if nt_var_p %}
+
+                                    <a href="{{ url_for('site.ntSitevar', ntPos=snp.snpPosition) }}" target="_blank">{{ nt_var_p.var_tot|round(3) }}</a>
+
+                                {% endif %}</td>
+
+                                <td class="w3-center" style="vertical-align: middle;">
+
+                                {% if aa_var_n %}
+
+                                    <a href="{{ url_for('site.aaSitevar', aaPos=snp_aa_pos, gene=locus.geneName) }}" target="_blank">{{ aa_var_n.varAa_intrahs|round(3) }}</a>
+
+                                {% endif %}</td>
+
+                                <td class="w3-center" style="vertical-align: middle;">
+
+                                {% if aa_var_p %}
+
+                                    <a href="{{ url_for('site.aaSitevar', aaPos=snp_aa_pos, gene=locus.geneName) }}" target="_blank">{{ aa_var_p.varAa_intrahs|round(3) }}</a>
+
+                                {% endif %}</td>
+
+                                <td class="w3-center" style="vertical-align: middle;">
+
+                                {% if aa_var_n and aa_var_n.varAa_intermam != 0 %}
+
+                                    <a href="{{ url_for('site.aaSitevar', aaPos=snp_aa_pos, gene=locus.geneName) }}" target="_blank">{{ aa_var_n.varAa_intermam|round(3) }}</a>
+
+                                {% elif aa_var_n and aa_var_n.varAa_intermam == 0 %}
+
+                                    <a href="{{ url_for('site.aaSitevar', aaPos=snp_aa_pos, gene=locus.geneName) }}" target="_blank">0.0</a>
+
+                                {% endif %}</td>
+
+                                <td class="w3-center" style="vertical-align: middle">
+
+                                {% if mitoDna %}
+
+                                    {% set dis = mitoDna.diseases.split(";") %}
+                                    {% for dId in dis %}
+                                        {% set d = queryDisease(dId) %}
+                                        {% if d %}
+                                            {% if d.url != "NULL" and d.url != "" %}
+
+                                                <a href="{{ d.url }}" target="_blank">{{ d.diseaseName }}</a><br />
+
+                                            {% else %}
+
+                                                {{ d.diseaseName }}<br />
+
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}</td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <tr>
+                            <td class="w3-center" colspan="13"></td>
+                            <td class="w3-center"></td>
+                            <td class="w3-center"></td>
+                            <td class="w3-center"></td>
+                            <td class="w3-center"></td>
+                            <td class="w3-center"></td>
+                            <td class="w3-center"></td>
+                            <td class="w3-center"></td>
+                            <td class="w3-center"></td>
+                            <td class="w3-center"></td>
+                            <td class="w3-center"></td>
+                            <td class="w3-center"></td>
+                        </tr>
+
+                    {% endif %}
+
+                    </tbody>
+
+                </table>
+
+                <br />
+
+                <div class="row">
+
+                    <!-- Deletions -->
+                    <div class="col-sm-6">
+
+                        <h5 class="main_titles">Deletions</h5>
+
+                        <table class="table" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr class="w3-light-blue w3-text-indigo w3-small">
+                                    <th class="w3-center">From Position</th>
+                                    <th class="w3-center">To Position</th>
+                                    <th class="w3-center">Locus Name</th>
+                                    <th class="w3-center">Haplogroup Code</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                            {% set deletions = queryDeletion(genome.genomeId) %}
+                            {% if deletions %}
+                                {% for del in deletions %}
+
+                                    <tr>
+                                        <td class="w3-center"><a href="{{ url_for('site.ntSitevar', ntPos=del.fromPosition) }}" target="_blank">{{ del.fromPosition }}</a></td>
+                                        <td class="w3-center">{{ del.toPosition }}</td>
+                                        {% set geneDel = queryLocus(del.fromPosition) %}
+                                        {% set locus_nomt = geneDel.geneName.split("-")[1] %}
+                                        <td class="w3-center">{{ locus_nomt }}</td>
+                                        <td class="w3-center"></td>{# da completare #}
+                                    </tr>
+
+                                {% endfor %}
+                            {% else %}
+
+                                <tr>
+                                    <td class="w3-center">&nbsp;</td>
+                                    <td class="w3-center"></td>
+                                    <td class="w3-center"></td>
+                                    <td class="w3-center"></td>
+                                    <td class="w3-center"></td>
+                                </tr>
+
+                            {% endif %}
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!-- Insertions -->
+                    <div class="col-sm-6">
+
+                        <h5 class="main_titles">Insertions</h5>
+
+                        <table class="table" cellspacing="0" cellpadding="0">
+
+                            <thead>
+                            <tr class="w3-light-blue w3-text-indigo w3-small">
+                                <th class="w3-center">5' Position</th>
+                                <th class="w3-center">Length</th>
+                                <th class="w3-center">Sequence</th>
+                                <th class="w3-center">Locus Name</th>
+                                <th class="w3-center">Haplogroup Code</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            {% set insertions = queryInsertion(genome.genomeId) %}
+                            {% if insertions %}
+                                {% for ins in insertions %}
+
+                                    <tr>
+                                        <td class="w3-center"><a href="{{ url_for('site.ntSitevar', ntPos=ins.position5P) }}" target="_blank">{{ ins.position5P }}</a></td>
+                                        <td class="w3-center">{{ ins.sequence|length }}</td>
+                                        <td class="w3-center">{{ ins.sequence }}</td>
+                                        {% set geneIns = queryLocus(ins.position5P) %}
+                                        {% set locus_nomt = geneIns.geneName.split("-")[1] %}
+                                        <td class="w3-center">{{ locus_nomt }}</td>
+                                        <td class="w3-center"></td>{# da completare #}
+                                    </tr>
+
+                                {% endfor %}
+
+                            {% else %}
+
+                                <tr>
+                                    <td class="w3-center">&nbsp;</td>
+                                    <td class="w3-center"></td>
+                                    <td class="w3-center"></td>
+                                    <td class="w3-center"></td>
+                                    <td class="w3-center"></td>
+                                </tr>
+
+                            {% endif %}
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <br /><br />
+
+                <div class="w3-container w3-center">
+
+                    <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-medium" name="Back" onclick="location.href='{{ url_for('site.queryCriteria') }}'">Back to Query HmtDB</button>
+
+                </div>
+
+            <br />
+
+        </div>
+
+    </div>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}

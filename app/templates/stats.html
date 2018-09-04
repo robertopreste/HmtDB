@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block styles %}
+    {{ super() }}
+
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['geochart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawRegionsMap);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawRegionsMap() {
+
+        // Create the data table.
+        var data = google.visualization.arrayToDataTable([['Region Code', 'Continent', 'Genomes', 'Variants'],
+            ['002', 'Africa', {{ worlddict['Africa']["T"] }}, {{ vardict['Africa'] }}],
+            ['019', 'America', {{ worlddict['America']["T"] }}, {{ vardict['America'] }}],
+            ['142', 'Asia', {{ worlddict['Asia']["T"] }}, {{ vardict['Asia'] }}],
+            ['150', 'Europe', {{ worlddict['Europe']["T"] }}, {{ vardict['Europe'] }}],
+            ['009', 'Oceania', {{ worlddict['Oceania']["T"] }}, {{ vardict['Oceania'] }}]]);
+
+        // Set chart options
+        var options = {
+            region: 'world',
+            backgroundColor: '#81d4fa',
+            resolution: 'continents',
+            legend: {textStyle: {color: 'blue', fontSize: 16}},
+            colorAxis: {colors: ['#FFFC33', '#4CFF33', '#33FFFF', '#3933FF', '#FF33A5', '#FF3333']}
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+    <!-- Content -->
+
+    <div class="container">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">Statistics</h3>
+
+            <h4 class="main_titles">World Map</h4>
+
+            <div class="row">
+
+                <div class="col-sm-1">&nbsp;</div>
+
+                <div class="col-sm-10 w3-center">
+
+                    <!--Div that will hold the geo chart-->
+                    <div id="regions_div"></div>
+
+                </div>
+
+                <div class="col-sm-1">&nbsp;</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <br />
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h4 class="main_titles">Genomes in HmtDB</h4>
+
+            <div class="row">
+
+                <div class="col-sm-12">
+
+                    <!-- First Table -->
+                    <table class="w3-table w3-bordered w3-card-8" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr class="w3-light-blue w3-text-indigo w3-medium">
+                                <th class="w3-padding-large w3-center">Continent Name</th>
+                                <th class="w3-padding-large w3-center">Individual Type</th>
+                                <th class="w3-padding-large w3-center">Number of Genomes</th>
+                                <th class="w3-padding-large w3-center">Complete Genomes</th>
+                                <th class="w3-padding-large w3-center">Only Coding Region Genomes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for cont in ["Africa", "America", "Asia", "Europe", "Oceania", "Undefined Continent", "All Continents"] %}
+                            <tr>
+                                <td class="w3-center" rowspan="2" style="vertical-align: middle">{{ cont }}</td>
+                                <td class="w3-center" style="vertical-align: middle">Normal</td>
+                                <td class="w3-center" style="vertical-align: middle">{{ worlddict[cont]["N"][0] }}</td>
+                                <td class="w3-center" style="vertical-align: middle">{{ worlddict[cont]["N"][1] }}</td>
+                                <td class="w3-center" style="vertical-align: middle">{{ worlddict[cont]["N"][2] }}</td>
+                            </tr>
+                            <tr>
+                                <td class="w3-center" style="vertical-align: middle">Patient</td>
+                                <td class="w3-center" style="vertical-align: middle">{{ worlddict[cont]["P"][0] }}</td>
+                                <td class="w3-center" style="vertical-align: middle">{{ worlddict[cont]["P"][1] }}</td>
+                                <td class="w3-center" style="vertical-align: middle">{{ worlddict[cont]["P"][2] }}</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+            <br>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h4 class="main_titles">Variant Sites in HmtDB</h4>
+
+            <div class="row">
+
+                <div class="col-sm-3">&nbsp;</div>
+
+                <div class="col-sm-6">
+
+                    <!-- Second Table -->
+                    <table class="w3-table w3-bordered w3-card-8" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr class="w3-light-blue w3-text-indigo w3-medium">
+                                <th class="w3-padding-large w3-center">Continent Name</th>
+                                <th class="w3-padding-large w3-center">Number of Variant Sites</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for cont in ["Africa", "America", "Asia", "Europe", "Oceania", "All Continents"] %}
+                            <tr>
+                                <td class="w3-center">{{ cont }}</td>
+                                <td class="w3-center">{{ vardict[cont] }}</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="col-sm-3">&nbsp;</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}

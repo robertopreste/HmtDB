@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">HmtDB Menu</h3>
+
+            <p class="paragraphs w3-padding">Here you can choose to perform a query on HmtDB data, access the MToolBox suite or download one of the HmtDB datasets.</p>
+            <br />
+
+            <div class="row">
+
+{#                <div class="col-sm-1">&nbsp;</div>#}
+
+                <!-- Query -->
+                <div class="col-sm-4">
+                <div class="panel" style="min-height: 250px;">
+                    <div class="panel-heading">
+                        <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-xlarge" onclick="location.href='{{ url_for('site.queryCriteria') }}'" name="Query" style="width: 100%;">Query</button>
+                    </div>
+                    <div class="panel-body">
+                        <p class="paragraphs_noind w3-padding">Perform your queries for human mitochondrial genomes within the Human Mitochondrial DataBase.</p>
+                    </div>
+                </div>
+                </div>
+
+                <!-- MToolBox -->
+                <div class="col-sm-4">
+                <div class="panel" style="min-height: 250px;">
+                    <div class="panel-heading">
+                        <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-xlarge" onclick="location.href='{{ url_for('site.mtoolbox') }}'" name="MToolBox" style="width: 100%;">MToolBox</button>
+                    </div>
+                    <div class="panel-body">
+                        <p class="paragraphs_noind w3-padding">A highly automated pipeline for annotation and prioritization of human mtDNA variants and for heteroplasmy detection and haplogroup assignment.</p>
+                    </div>
+                </div>
+                </div>
+
+{#                <div class="col-sm-1">&nbsp;</div>#}
+
+                <!-- Downloads -->
+                <div class="col-sm-4">
+                <div class="panel" style="min-height: 250px;">
+                    <div class="panel-heading">
+                        <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-xlarge" onclick="location.href='{{ url_for('site.downloads') }}'" name="HmtDB Download" style="width: 100%">Download</button>
+                    </div>
+                    <div class="panel-body">
+                        <p class="paragraphs_noind w3-padding">Download HmtDB genomes alignments and site variability tables.</p>
+                    </div>
+                </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}

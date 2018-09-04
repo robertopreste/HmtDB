@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <form action="" method="post">
+    {{ form.hidden_tag() }}
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">HmtDB Login</h3>
+            <p class="paragraphs w3-padding">Login with your HmtDB authentication credentials. If you are a new HmtDB user, please
+                <a href="{{ url_for('site.register') }}" title="Register">register</a>. </p>
+
+            {% with messages = get_flashed_messages() %}
+
+                {% if messages %}
+                    <div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <ul class="flashes"></ul>
+                        {% for message in messages %}
+
+                            <li>{{ message }}</li>
+
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+            {% endwith %}
+
+        </div>
+
+    </div>
+
+    <br><br>
+
+    <div class="row">
+
+        <div class="col-sm-4">&nbsp;</div>
+
+        <div class="col-sm-4 text-center">
+
+            <p>Username: <br>
+                <input class="w3-input w3-border w3-round-large w3-pale-green" type="text" id="username" name="username">
+            </p>
+
+        </div>
+
+        <div class="col-sm-4">&nbsp;</div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-4">&nbsp;</div>
+
+        <div class="col-sm-4 text-center">
+
+            <p>Password: <br>
+                <input class="w3-input w3-border w3-round-large w3-pale-green" type="password" id="password" name="password">
+            </p>
+
+        </div>
+
+        <div class="col-sm-4">&nbsp;</div>
+
+    </div>
+
+    <br>
+
+    <div class="row">
+
+        <div class="col-sm-4">&nbsp;</div>
+
+        <div class="col-sm-4 text-center">
+
+            <input class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-large" type="submit" name="login_submit" value="Login">
+
+        </div>
+
+        <div class="col-sm-4">&nbsp;</div>
+
+    </div>
+
+    </form>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}

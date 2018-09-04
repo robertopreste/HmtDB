@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">HmtDB APIs</h3>
+            <p class="paragraphs w3-padding">HmtDB offers an integrated API to programmatically access human mitochondrial data stored in our database, and its documentation is available at the <a href="{{ url_for('api.doc') }}" title="HmtDB basic API" target="_blank">HmtDB basic API</a> page.</p>
+            <p class="paragraphs w3-padding">An RD-Connect API is also available, which is compliant with the <a
+                    href="http://rd-connect.eu" title="RD-Connect" target="_blank">RD-Connect</a> platform, so that human mitochondrial variants found in our genomes can be queried and their data accessed.</p>
+
+            <h4 class="main_titles">RD-Connect API</h4>
+
+            <p class="paragraphs w3-padding">The RD-Connect API is structured upon the RD-Connect Common API
+                <a href="https://docs.google.com/document/d/1-9sDYEVYfZqTJZdPKjW_kqBd9vjI4dQP0Fn_sYnoy0c/edit#heading=h.3ef0jkna6fzs" title="RD-Connect Common API specifications" target="_blank">specifications</a>, and can be used to query our database for one or more mitochondrial variants. The API will return a link to an HmtDB web page showing all relevant data for that specific variant.</p>
+
+            <h5 class="main_titles">Request format</h5>
+
+            <p class="paragraphs w3-padding">Requests to the HmtDB RD-Connect API can be made to <code>https://www.hmtdb.uniba.it/rdconnect?</code> and can accept the following arguments:</p>
+
+            <ul>
+
+                <li><code>gene_id=&lt;string&gt;&</code> - variants belonging to the specified mitochondrial gene (e.g. MT-ND1, MT-CO1, MT-CYB)</li>
+                <li><code>variant_start=&lt;int&gt;&</code> - variants starting on the specified mitochondrial position</li>
+
+                <li><code>variant_end=&lt;int&gt;&</code> - available for variants involving more than a single nucleotide and ending on the specified mitochondrial position (can be omitted for single nucleotide variants)</li>
+
+                <li><code>variant_referenceBases=&lt;char&gt;&</code> - variants for which the reference nucleotide is the one specified</li>
+
+                <li><code>variant_alternateBases=&lt;char&gt;&</code> - variants with the specified alternative allele</li>
+
+                <li><code>variant_assembly=hg19&</code> - variants found with respect to the selected reference assembly (currently only hg19 is supported)</li>
+
+                <li><code>variant_chromosome=M&</code> - variants belonging to the specified chromosome (in this case only M is supported)</li>
+
+            </ul>
+
+            <h5 class="main_titles">Output format</h5>
+
+            <p class="paragraphs w3-padding">The output of the RD-Connect API requests consists in a JSON-formatted string containing a <code>"success"</code> key, which can be <code>"true"</code> or <code>"false"</code> depending on whether the requested variant exists or not in our database. In case it exists, a <code>"url"</code> key is also present, and it reports the link to the correspondent HmtDB Variant Card.</p>
+            <p class="paragraphs w3-padding">When more than one variant is available with the requested arguments, a list of the above-mentioned JSON strings is provided, each one reporting its own <code>"success"</code> and <code>"url"</code> keys.</p>
+
+            <p class="paragraphs w3-padding">As an example, in order to search for a variant belonging to the ND1 mitochondrial gene and starting on the 3308 position, it is possible to launch a GET request to <code>https://www.hmtdb.uniba.it/rdconnect?gene_id=MT-ND1&variant_start=3308</code>, which will return: </p>
+
+            <pre>
+                [
+                    {
+                        "success": "true",
+                        "url": "https://www.hmtdb.uniba.it/variantCard/1254"
+                    },
+                    {
+                        "success": "true",
+                        "url": "https://www.hmtdb.uniba.it/variantCard/1255"
+                    },
+                    {
+                        "success": "true",
+                        "url": "https://www.hmtdb.uniba.it/variantCard/1256"
+                    }
+                ]
+            </pre>
+
+            <p class="paragraphs w3-padding">In order to find the specific variant that belongs to the ND1 gene, starting on 3308 and with the C alternate allele, the GET request is <code>https://www.hmtdb.uniba.it/rdconnect?gene_id=MT-ND1&variant_start=3308&variant_alternateBases=C</code>, which returns: </p>
+
+            <pre>
+                {
+                    "success": "true",
+                    "url": "https://www.hmtdb.uniba.it/variantCard/1255"
+                }
+            </pre>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}

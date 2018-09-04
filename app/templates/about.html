@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">About this project</h3>
+
+            <p class="paragraphs w3-padding">HmtDB is an open resource created to support population genetics and mitochondrial disease studies. The database hosts human mitochondrial genome sequences annotated with population and variability data, the latter being estimated through the application of the <a href="{{ url_for('site.siteVariability') }}" title="Site Variability">SiteVar/MitVarProt</a> programs, based on site-specific nucleotide and aminoacid variability calculations. The annotations are manually curated thus adding value to the quality of the information provided to the end-user.</p>
+            <p class="paragraphs w3-padding">Classifier tools implemented in HmtDB allow the prediction of the haplogroup for any human mitochondrial genome currently stored in HmtDB or externally submitted <i>de novo</i> by an end-user. Haplogroup definition is based on the <a href="http://www.phylotree.org/" title="Phylotree" target="_blank">Phylotree</a> system.</p>
+            <p class="paragraphs w3-padding">End-users accessing HmtDB are hence allowed to:</p>
+                <ul>
+                    <li>browse the database through a multi-criterion query system;</li>
+                    <li>analyse their own human mitochondrial sequences via the <i>classify</i> tool or by downloading the <i>mt-classifier</i> tool;</li>
+                    <li>download multi-alignments with reference genomes as well as variability data.</li>
+                </ul>
+
+            <h4 class="main_titles">Database content</h4>
+
+            <p class="paragraphs w3-padding">HmtDB contains human mitochondrial genomes derived from the public primary INSDC databases, personal submissions and from the application of the <a href="{{ url_for('site.mtoolbox') }}" title="MToolBox">MToolBox</a> pipeline to NGS data, such as genomes coming from the <a href="http://www.1000genomes.org/" target="_blank" title="1000Genomes">1000Genomes</a> project.</p>
+            <p class="paragraphs w3-padding">Genomes associated to population studies are stored and analyzed as a whole dataset (healthy) and grouped in continent-specific subsets (AF: Africa, AM: America, AS: Asia, EU: Europe, OC: Oceania). Genomes from subjects affected by diseases are reported in a separate dataset annotated as pathologic. The number of genomes of each dataset is available through the <a href="{{ url_for("site.stats") }}" title="Statistics">Statistics</a> page.</p>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}
+

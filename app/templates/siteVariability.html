@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">SiteVar and MitVarProt Algorithms</h3>
+
+            <p class="paragraphs w3-padding">Site-specific variability indexes are calculated through the application of <b>SiteVar</b> (for nucleotide sequences)<sup>1</sup> and <b>MitVarProt</b> (for aminoacid sequences)<sup>2</sup>, according to the following algorithm:</p>
+
+            <div class="row">
+                <div class="col-sm-4">&nbsp;</div>
+                <div class="col-sm-4">
+                    <img src="/static/img/equat.png" alt="Algorithm Equation">
+                </div>
+                <div class="col-sm-4">&nbsp;</div>
+            </div>
+
+            <p class="paragraphs w3-padding">in which <span style="font-family: serif; font-size: 20px;"><i>&upsilon;<sub>i</sub></i></span> is the variability value estimated for each <i>i<sup>th</sup></i> site of a dataset containing <i>N</i> sequences.</p>
+            <p class="paragraphs w3-padding">When applying this algorithm to nucleotide sequences, <span style="font-family: serif; font-size: 20px;"><i>&delta;</i></span> is a parameter whose value is 1 for transitions and 2 for both transversions and gaps in the <i>i<sup>th</sup></i> position of the pair of sequences <i>j</i>, and <i>K<sub>j</sub></i> is the mean genetic distance calculated for the pair of sequences <i>j</i> on the entire alignment, according to the Kimura model.</p>
+            <p class="paragraphs w3-padding">When applying this algorithm to aminoacid sequences, <span style="font-family: serif; font-size: 20px;"><i>&delta;</i></span> is a mtREV index (expressing the level of similarity between two aminoacids) for the <i>i<sup>th</sup></i> position of the pair of sequences <i>j</i>, and <i>K<sub>j</sub></i> is the mean genetic distance calculated according to the Kimura model.</p>
+            <p class="paragraphs w3-padding">In both cases, <span style="font-family: serif; font-size: 20px;"><i>&upsilon;<sub>i</sub></i></span> values are normalized with respect to the maximum value of variability (<span style="font-family: serif; font-size: 20px;"><i>&upsilon;<sub>max</sub></i></span>) calculated in the considered dataset, thus obtaining a new value, <span style="font-family: serif; font-size: 20px;"><i>&gamma;<sub>i</sub></i></span>, which makes variability indexes comparable among different datasets:</p>
+
+            <div class="row">
+                <div class="col-sm-4">&nbsp;</div>
+                <div class="col-sm-4">
+                    <img src="/static/img/sec_equat.png" alt="Algorithm Equation">
+                </div>
+                <div class="col-sm-4">&nbsp;</div>
+            </div>
+
+            <br />
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+            <br><br>
+            <ol>
+                <li>
+                    <p>Rubino F, Piredda R, Calabrese FM, Simone D, Lang M, Calabrese C, Petruzzella V, Tommaseo-Ponzetta M, Gasparre G, Attimonelli M <br>
+                    HmtDB, a genomic resource for mitochondrion-based human variability studies <br>
+                    DOI: <a href="https://doi.org/10.1093/nar/gkr1086" title="DOI" target="_blank">10.1093/nar/gkr1086</a></p>
+                </li>
+                <li>
+                    <p>Attimonelli M, Accetturo M, Santamaria M, Lascaro D, Scioscia G, Pappad&agrave; G, Russo L, Zanchetta L, Tommaseo-Ponzetta M <br>
+                    HmtDB, a human mitochondrial genomic resource based on variability studies supporting population genetics and biomedical research <br>
+                    DOI: <a href="https://doi.org/10.1186/1471-2105-6-S4-S4" title="DOI" target="_blank">10.1186/1471-2105-6-S4-S4</a></p>
+                </li>
+            </ol>
+        </div>
+
+    </div>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}

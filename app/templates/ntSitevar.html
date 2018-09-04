@@ -1,0 +1,327 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">    
+
+    <div class="row">
+    
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">Nt Site Variability</h3>
+
+            <br />
+
+            <table class="table" cellpadding="0" cellspacing="0">
+
+                <thead>
+                    <tr class="w3-light-blue w3-text-indigo w3-small">
+                        <th class="w3-center">Mutation Position</th>
+                        <th class="w3-center">Individual Type</th>
+                        <th class="w3-center">Continent</th>
+                        <th class="w3-center">Actual Variability</th>
+                        <th class="w3-center">%A</th>
+                        <th class="w3-center">%C</th>
+                        <th class="w3-center">%G</th>
+                        <th class="w3-center">%T</th>
+                        <th class="w3-center">%Gap</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                <tr>
+                    <td rowspan="12" class="w3-center">{{ ntPos }}</td>
+
+                    {% if posN %}
+                        <td rowspan="6" class="w3-center">&nbsp;Normal</td>
+
+                        <td class="w3-center">Africa</td>
+
+                        {% if posN.var_af %}
+                            {% set percA, percC, percT, percG, percGap = posN.compVar_af.split(";") %}
+
+                            <td class="w3-center"><b>{{ posN.var_af|round(3) }}</b></td>
+                            <td class="w3-center">{{ percA }}</td>
+                            <td class="w3-center">{{ percC }}</td>
+                            <td class="w3-center">{{ percG }}</td>
+                            <td class="w3-center">{{ percT }}</td>
+                            <td class="w3-center">{{ percGap }}</td>
+                        {% else %}
+                            <td class="w3-center"><b>0.0</b></td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                        {% endif %}
+
+                </tr>
+                <tr>
+                        <td class="w3-center">America</td>
+
+                        {% if posN.var_am %}
+                            {% set percA, percC, percT, percG, percGap = posN.compVar_am.split(";") %}
+
+                            <td class="w3-center"><b>{{ posN.var_am|round(3) }}</b></td>
+                            <td class="w3-center">{{ percA }}</td>
+                            <td class="w3-center">{{ percC }}</td>
+                            <td class="w3-center">{{ percG }}</td>
+                            <td class="w3-center">{{ percT }}</td>
+                            <td class="w3-center">{{ percGap }}</td>
+                        {% else %}
+                            <td class="w3-center"><b>0.0</b></td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                        {% endif %}
+
+                </tr>
+                <tr>
+                        <td class="w3-center">Asia</td>
+
+                        {% if posN.var_as %}
+                            {% set percA, percC, percT, percG, percGap = posN.compVar_as.split(";") %}
+
+                            <td class="w3-center"><b>{{ posN.var_as|round(3) }}</b></td>
+                            <td class="w3-center">{{ percA }}</td>
+                            <td class="w3-center">{{ percC }}</td>
+                            <td class="w3-center">{{ percG }}</td>
+                            <td class="w3-center">{{ percT }}</td>
+                            <td class="w3-center">{{ percGap }}</td>
+                        {% else %}
+                            <td class="w3-center"><b>0.0</b></td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                        {% endif %}
+
+                </tr>
+                <tr>
+                        <td class="w3-center">Europe</td>
+
+                        {% if posN.var_eu %}
+                            {% set percA, percC, percT, percG, percGap = posN.compVar_eu.split(";") %}
+
+                            <td class="w3-center"><b>{{ posN.var_eu|round(3) }}</b></td>
+                            <td class="w3-center">{{ percA }}</td>
+                            <td class="w3-center">{{ percC }}</td>
+                            <td class="w3-center">{{ percG }}</td>
+                            <td class="w3-center">{{ percT }}</td>
+                            <td class="w3-center">{{ percGap }}</td>
+                        {% else %}
+                            <td class="w3-center"><b>0.0</b></td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                        {% endif %}
+
+                </tr>
+                <tr>
+                        <td class="w3-center">Oceania</td>
+
+                        {% if posN.var_oc %}
+                            {% set percA, percC, percT, percG, percGap = posN.compVar_oc.split(";") %}
+
+                            <td class="w3-center"><b>{{ posN.var_oc|round(3) }}</b></td>
+                            <td class="w3-center">{{ percA }}</td>
+                            <td class="w3-center">{{ percC }}</td>
+                            <td class="w3-center">{{ percG }}</td>
+                            <td class="w3-center">{{ percT }}</td>
+                            <td class="w3-center">{{ percGap }}</td>
+                        {% else %}
+                            <td class="w3-center"><b>0.0</b></td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                        {% endif %}
+
+                </tr>
+                <tr>
+                        <td class="w3-center">All</td>
+
+                        {% if posN.var_tot %}
+                            {% set percA, percC, percT, percG, percGap = posN.compVar_tot.split(";") %}
+
+                            <td class="w3-center"><b>{{ posN.var_tot|round(3) }}</b></td>
+                            <td class="w3-center">{{ percA }}</td>
+                            <td class="w3-center">{{ percC }}</td>
+                            <td class="w3-center">{{ percG }}</td>
+                            <td class="w3-center">{{ percT }}</td>
+                            <td class="w3-center">{{ percGap }}</td>
+                        {% else %}
+                            <td class="w3-center"><b>0.0</b></td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                        {% endif %}
+
+                    {% endif %}
+
+                </tr>
+                <tr>
+                    {% if posP %}
+                        <td rowspan="6" class="w3-center">Patient</td>
+
+                        <td class="w3-center">Africa</td>
+
+                        {% if posP.var_af %}
+                            {% set percA, percC, percT, percG, percGap = posP.compVar_af.split(";") %}
+
+                            <td class="w3-center"><b>{{ posP.var_af|round(3) }}</b></td>
+                            <td class="w3-center">{{ percA }}</td>
+                            <td class="w3-center">{{ percC }}</td>
+                            <td class="w3-center">{{ percG }}</td>
+                            <td class="w3-center">{{ percT }}</td>
+                            <td class="w3-center">{{ percGap }}</td>
+                        {% else %}
+                            <td class="w3-center"><b>0.0</b></td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                        {% endif %}
+
+                </tr>
+                <tr>
+                        <td class="w3-center">America</td>
+
+                        {% if posP.var_am %}
+                            {% set percA, percC, percT, percG, percGap = posP.compVar_am.split(";") %}
+
+                            <td class="w3-center"><b>{{ posP.var_am|round(3) }}</b></td>
+                            <td class="w3-center">{{ percA }}</td>
+                            <td class="w3-center">{{ percC }}</td>
+                            <td class="w3-center">{{ percG }}</td>
+                            <td class="w3-center">{{ percT }}</td>
+                            <td class="w3-center">{{ percGap }}</td>
+                        {% else %}
+                            <td class="w3-center"><b>0.0</b></td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                        {% endif %}
+
+                </tr>
+                <tr>
+                        <td class="w3-center">Asia</td>
+
+                        {% if posP.var_as %}
+                            {% set percA, percC, percT, percG, percGap = posP.compVar_as.split(";") %}
+
+                            <td class="w3-center"><b>{{ posP.var_as|round(3) }}</b></td>
+                            <td class="w3-center">{{ percA }}</td>
+                            <td class="w3-center">{{ percC }}</td>
+                            <td class="w3-center">{{ percG }}</td>
+                            <td class="w3-center">{{ percT }}</td>
+                            <td class="w3-center">{{ percGap }}</td>
+                        {% else %}
+                            <td class="w3-center"><b>0.0</b></td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                        {% endif %}
+
+                </tr>
+                <tr>
+                        <td class="w3-center">Europe</td>
+
+                        {% if posP.var_eu %}
+                            {% set percA, percC, percT, percG, percGap = posP.compVar_eu.split(";") %}
+
+                            <td class="w3-center"><b>{{ posP.var_eu|round(3) }}</b></td>
+                            <td class="w3-center">{{ percA }}</td>
+                            <td class="w3-center">{{ percC }}</td>
+                            <td class="w3-center">{{ percG }}</td>
+                            <td class="w3-center">{{ percT }}</td>
+                            <td class="w3-center">{{ percGap }}</td>
+                        {% else %}
+                            <td class="w3-center"><b>0.0</b></td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                        {% endif %}
+
+                </tr>
+                <tr>
+                        <td class="w3-center">Oceania</td>
+
+                        {% if posP.var_oc %}
+                            {% set percA, percC, percT, percG, percGap = posP.compVar_oc.split(";") %}
+
+                            <td class="w3-center"><b>{{ posP.var_oc|round(3) }}</b></td>
+                            <td class="w3-center">{{ percA }}</td>
+                            <td class="w3-center">{{ percC }}</td>
+                            <td class="w3-center">{{ percG }}</td>
+                            <td class="w3-center">{{ percT }}</td>
+                            <td class="w3-center">{{ percGap }}</td>
+                        {% else %}
+                            <td class="w3-center"><b>0.0</b></td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                        {% endif %}
+
+                </tr>
+                <tr>
+                        <td class="w3-center">All</td>
+                        {% if posP.var_tot %}
+                            {% set percA, percC, percT, percG, percGap = posP.compVar_tot.split(";") %}
+
+                            <td class="w3-center"><b>{{ posP.var_tot|round(3) }}</b></td>
+                            <td class="w3-center">{{ percA }}</td>
+                            <td class="w3-center">{{ percC }}</td>
+                            <td class="w3-center">{{ percG }}</td>
+                            <td class="w3-center">{{ percT }}</td>
+                            <td class="w3-center">{{ percGap }}</td>
+                        {% else %}
+                            <td class="w3-center"><b>0.0</b></td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                            <td class="w3-center">0.00</td>
+                        {% endif %}
+
+                    {% endif %}
+                </tr>
+
+                </tbody>
+
+            </table>
+
+            <br /><br />
+
+            <div class="w3-container w3-center">
+
+                <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-medium" name="Close" onclick="location.href='javascript:window.close()'">Back to HmtDB</button>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+    </div>
+
+    {{ super() }}
+{% endblock %}

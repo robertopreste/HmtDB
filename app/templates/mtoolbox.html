@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <h3 class="main_titles">MToolBox</h3>
+
+            <p class="paragraphs w3-padding">MToolBox is a highly automated bioinformatics pipeline to reconstruct and analyze human mitochondrial DNA from high throughput sequencing data. MToolBox includes an updated computational strategy to assemble mitochondrial genomes from Whole Exome and/or Genome Sequencing (<a href="http://www.ncbi.nlm.nih.gov/pubmed/22669646" target="_blank" title="Mitochondrial genomes gleaned from human whole-exome sequencing.">PMID: 22669646</a>) and an improved fragment-classify tool (<a href="http://www.ncbi.nlm.nih.gov/pubmed/22139932" target="_blank" title="HmtDB, a genomic resource for mitochondrion-based human variability studies.">PMID: 22139932</a>) for haplogroup assignment, functional and prioritization analysis of mitochondrial variants. MToolBox provides pathogenicity scores, profiles of genome variability and disease-associations for mitochondrial variants, as well as a Variant Call Format file featuring allele-specific heteroplasmy.</p>
+
+            <p class="paragraphs w3-padding">The MToolBox pipeline is either available as a command-line stand-alone (hosted on GitHub) or through a graphical-interface web application (hosted on MSeqDR), with the same functionality in both cases. You can read more about MToolBox on this <a href="https://bioinformatics.oxfordjournals.org/content/30/21/3115.long" target="_blank" title="MToolBox Bioinformatics">Bioinformatics</a> article.</p>
+
+            <div class="w3-center">
+
+                <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-large" title="MToolBox GitHub" href="https://github.com/mitoNGS/MToolBox" target="_blank">MToolBox - GitHub</button>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-large" title="MToolBox MSeqDR" href="https://mseqdr.org/mtoolbox.php" target="_blank">MToolBox - MSeqDR</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    {{ super() }}
+{% endblock %}
