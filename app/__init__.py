@@ -19,21 +19,21 @@ login = LoginManager(app)
 login.login_view = "site.login"
 mail = Mail(app)
 
-from api.views import res
-from site.views import mod
+from app.api.views import res
+from app.site.views import www
 
-from api.views import api
-from api.endpoints.genomes import ns as genome_namespace
-from api.endpoints.individuals import ns as individual_namespace
-from api.endpoints.methods import ns as method_namespace
-from api.endpoints.countries import ns as country_namespace
-from api.endpoints.diseases import ns as disease_namespace
-from api.endpoints.ethnics import ns as ethnic_namespace
-from api.endpoints.sources import ns as source_namespace
-from api.endpoints.genAnnotations import ns as genAnnotation_namespace
-from api.endpoints.deletions import ns as deletion_namespace
-from api.endpoints.insertions import ns as insertion_namespace
-from api.endpoints.genomeSnps import ns as snp_namespace
+from app.api.views import api
+from app.api.endpoints.genomes import ns as genome_namespace
+from app.api.endpoints.individuals import ns as individual_namespace
+from app.api.endpoints.methods import ns as method_namespace
+from app.api.endpoints.countries import ns as country_namespace
+from app.api.endpoints.diseases import ns as disease_namespace
+from app.api.endpoints.ethnics import ns as ethnic_namespace
+from app.api.endpoints.sources import ns as source_namespace
+from app.api.endpoints.genAnnotations import ns as genAnnotation_namespace
+from app.api.endpoints.deletions import ns as deletion_namespace
+from app.api.endpoints.insertions import ns as insertion_namespace
+from app.api.endpoints.genomeSnps import ns as snp_namespace
 
 api.add_namespace(genome_namespace)
 api.add_namespace(individual_namespace)
@@ -47,5 +47,5 @@ api.add_namespace(deletion_namespace)
 api.add_namespace(insertion_namespace)
 api.add_namespace(snp_namespace)
 
-app.register_blueprint(mod, static_folder="site/static")
+app.register_blueprint(www, static_folder="site/static")
 app.register_blueprint(res, url_prefix="/api")

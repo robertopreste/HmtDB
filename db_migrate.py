@@ -23,7 +23,7 @@ api.upgrade(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
 v = api.db_version(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
 
 # questo crea il file dbdata.py con i dati per popolare i menu a tendina
-with open("db_repo/dbdata.py", "w") as d:
+with open("app/static/dbdata.py", "w") as d:
 
     sources = getSources()
     d.write("sources = " + repr(sources) + "\n")
