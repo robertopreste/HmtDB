@@ -15,7 +15,9 @@ class IndividualsList(Resource):
     def get(self):
         """
         Get all the entries in IndividualsData table.
-        It is not recommended to run this query, as it may load a huge number of entries and consequently slow down your browser. Will return a list of entries.
+        It is not recommended to run this query, as it may load a huge number of entries and
+        consequently slow down your browser.
+        Will return a list of entries.
         """
         q = IndividualsData.query.all()
         return individual_schema_many.jsonify(q)
@@ -30,6 +32,3 @@ class IndividualsId(Resource):
         """
         q = IndividualsData.query.filter(IndividualsData.individualId == individual_id).first()
         return individual_schema.jsonify(q)
-
-
-

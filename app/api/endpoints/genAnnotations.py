@@ -15,7 +15,9 @@ class GenAnnotationList(Resource):
     def get(self):
         """
         Get all the entries in GenAnnotation table.
-        It is not recommended to run this query, as it may load a huge number of entries and consequently slow down your browser. Will return a list of entries.
+        It is not recommended to run this query, as it may load a huge number of entries and
+        consequently slow down your browser.
+        Will return a list of entries.
         """
         q = GenAnnotation.query.all()
         return genAnnotation_schema_many.jsonify(q)

@@ -15,7 +15,9 @@ class CountryList(Resource):
     def get(self):
         """
         Get all the entries in Country table.
-        It is not recommended to run this query, as it may load a huge number of entries and consequently slow down your browser. Will return a list of entries.
+        It is not recommended to run this query, as it may load a huge number of entries and
+        consequently slow down your browser.
+        Will return a list of entries.
         """
         q = Country.query.all()
         return country_schema_many.jsonify(q)

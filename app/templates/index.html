@@ -60,7 +60,6 @@
                 </div>
 
                 <div class="col-sm-4 text-center">
-{#                    <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-xlarge" onclick="location.href='{{ url_for('api.doc') }}'" title="HmtDB API">HmtDB API</button>#}
                     <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-xlarge" onclick="location.href='{{ url_for('site.apis') }}'" title="HmtDB API">HmtDB API</button>
                 </div>
 
@@ -68,15 +67,13 @@
 
             </div>
 
-{#            <br />#}
-
         </div>
 
         <div class="col-sm-2">&nbsp;</div>
 
     </div>
 
-    <div class="row" style="margin-top: 2rem;">
+    <div class="row w3-center" style="margin-top: 2rem;">
 
         <div class="col-sm-4">&nbsp;</div>
 
@@ -91,61 +88,48 @@
     </div>
 
     {# Loghi Sponsor #}
-    <div class="row" style="margin-top: 2em;">
+    <div class="row" style="margin-top: 2em; display: inline-block;">
 
         <div class="col-sm-1">&nbsp;</div>
-
-        <div class="col-sm-10">
-
-            <!--<div class="w3-container">-->
-
-                <div class="row w3-margin-small w3-center" style="display: inline-block">
-                    <div class="col-sm-3" style="margin-top: -1.5em;">
-                        <div class="w3-center">
-
-                            <a href="https://mseqdr.org/index.php" target="_blank" title="MSeqDR">
-                                <img src="{{ url_for('static', filename = 'img/logo_mseqdr.png') }}" alt="MSeqDR Logo">
-
-                            </a>
-
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="w3-center">
-
-                            <a href="https://mseqdr.org/gbrowse_bridge.php" target="_blank" title="GBrowse">
-                                <img src="{{ url_for('static', filename = 'img/GBrowseLogo.png') }}" alt="GBrowse Logo">
-                            </a>
-
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="w3-center">
-
-                            <a href="http://www.phylotree.org" target="_blank" title="PhyloTree">
-                                <img src="{{ url_for('static', filename = 'img/logo_PhyloTree_mt.png') }}" alt="PhyloTree Logo">
-                            </a>
-
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="w3-center">
-
-                            <a href="https://mitomap.org//MITOMAP/" target="_blank" title="Mitoweb">
-                                <img src="{{ url_for('static', filename = 'img/logo_mitoweb.jpg') }}" alt="Mitoweb Logo">
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-
-            <!--</div>-->
-
+        <div class="col-sm-2" style="margin-top: -1.5em;">
+            <div class="w3-center">
+                <a href="https://mseqdr.org/index.php" target="_blank" title="MSeqDR">
+                    <img src="{{ url_for('static', filename = 'img/logo_mseqdr.png') }}" alt="MSeqDR Logo">
+                </a>
+            </div>
         </div>
 
+        <div class="col-sm-2">
+            <div class="w3-center">
+                <a href="https://mseqdr.org/gbrowse_bridge.php" target="_blank" title="GBrowse">
+                    <img src="{{ url_for('static', filename = 'img/GBrowseLogo.png') }}" alt="GBrowse Logo">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="w3-center">
+                <a href="http://www.phylotree.org" target="_blank" title="PhyloTree">
+                    <img src="{{ url_for('static', filename = 'img/logo_PhyloTree_mt.png') }}" alt="PhyloTree Logo">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="w3-center">
+                <a href="https://mitomap.org//MITOMAP/" target="_blank" title="Mitoweb">
+                    <img src="{{ url_for('static', filename = 'img/logo_mitoweb.jpg') }}" alt="Mitoweb Logo">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="w3-center">
+                <a href="https://www.recas-bari.it/index.php/it/" title="Recas" target="_blank">
+                    <img src="{{ url_for('static', filename = 'img/testata_recas.png') }}" alt="Recas Logo">
+                </a>
+            </div>
+        </div>
         <div class="col-sm-1">&nbsp;</div>
 
     </div>

@@ -15,7 +15,9 @@ class DeletionList(Resource):
     def get(self):
         """
         Get all the entries in Deletion table.
-        It is not recommended to run this query, as it may load a huge number of entries and consequently slow down your browser. Will return a list of entries.
+        It is not recommended to run this query, as it may load a huge number of entries and
+        consequently slow down your browser.
+        Will return a list of entries.
         """
         q = Deletion.query.all()
         return deletion_schema_many.jsonify(q)

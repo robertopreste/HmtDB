@@ -3,11 +3,7 @@
 # Created by Roberto Preste
 import json
 import requests
-from threading import Thread
-from flask_login import current_user
-from flask_mail import Message
-from app import app, db, mail
-from .models import Country, Sources, Disease, Reference, Genome, Stats, NtVariability, User, Downloads
+from .models import Country, Sources, Disease, Reference, Genome, Stats, NtVariability
 
 
 def retrieveHmtVar(pos, alt):
@@ -377,26 +373,4 @@ function openCenteredPopup(target, w, h) {
 
 """
     return stringa
-
-
-def add_download_entry(dataset, user_id):
-    """Update the Downloads table adding a new entry for each file downloaded for each user. """
-
-    down = Downloads(dataset=dataset, user_id=user_id)
-    db.session.add(down)
-    db.session.commit()
-
-    return
-
-
-def send_async_email(app, msg):
-    with app.app_context():
-        mail.send(msg)
-
-
-def send_email(subject, sender, recipients, text_body):
-    msg = Message(subject=subject, sender=sender, recipients=recipients)
-    msg.body = text_body
-    thr = Thread(target=send_async_email, args=[app, msg])
-    thr.start()
 

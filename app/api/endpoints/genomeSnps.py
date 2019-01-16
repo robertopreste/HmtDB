@@ -15,7 +15,9 @@ class GenomeSnpList(Resource):
     def get(self):
         """
         Get all the entries in GenomeSnp table.
-        It is not recommended to run this query, as it may load a huge number of entries and consequently slow down your browser. Will return a list of entries.
+        It is not recommended to run this query, as it may load a huge number of entries and
+        consequently slow down your browser.
+        Will return a list of entries.
         """
         q = GenomeSnp.query.all()
         return snp_schema_many.jsonify(q)

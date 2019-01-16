@@ -14,13 +14,5 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "hmtdb.db")
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, "db_repo")
 
-# DA CONFIGURARE
-# mail server
-MAIL_SERVER = "mail.server.com"
-MAIL_PORT = 25
-MAIL_USE_TLS = True
-MAIL_USERNAME = "user.name"
-MAIL_PASSWORD = "password1234"
-
 # administrators
 ADMINS = ["admin@mail.com"]

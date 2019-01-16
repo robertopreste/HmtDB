@@ -16,7 +16,9 @@ class GenomeList(Resource):
     def get(self):
         """
         Get all the entries in Genome table.
-        It is not recommended to run this query, as it may load a huge number of entries and consequently slow down your browser. Will return a list of entries.
+        It is not recommended to run this query, as it may load a huge number of entries and
+        consequently slow down your browser.
+        Will return a list of entries.
         """
         q = Genome.query.all()
         return genome_schema_many.jsonify(q)
@@ -75,12 +77,12 @@ class GenomeSnpPosition(Resource):
     def get(self, snp_pos):
         """
         Find genomes with the snp(s) in the specified position(s).
-        Snps can be in one position (e.g. 263), several positions (e.g. 245,2145,11789) or in a specific region (1120-2780).
+        Snps can be in one position (e.g. 263), several positions (e.g. 245,2145,11789) or in a
+        specific region (1120-2780).
         Will return a list of entries.
         """
         if "," in snp_pos:
             positions = snp_pos.split(",")
-            # qui cerco usando OR
             query_snp = "Genome.query.join(GenomeSnp).filter(or_(GenomeSnp.snpPosition == %d" % int(positions[0])
             for n in range(1, len(positions)):
                 query_snp += ", GenomeSnp.snpPosition == %d" % int(positions[n])
@@ -93,8 +95,3 @@ class GenomeSnpPosition(Resource):
             snpPositionQ = Genome.query.join(GenomeSnp).filter(GenomeSnp.snpPosition == int(snp_pos)).subquery()
         q = Genome.query.join(snpPositionQ, Genome.genomeId == snpPositionQ.c.genomeId).order_by(Genome.genomeId).all()
         return genome_schema_many.jsonify(q)
-
-
-
-
-

@@ -4,8 +4,7 @@
 import requests
 import json
 from flask import Blueprint, render_template, flash, redirect, session, url_for, request, g, jsonify, send_file
-from werkzeug.urls import url_parse
-from .scripts import retrieveHmtVar, add_download_entry, send_email
+from .scripts import retrieveHmtVar
 
 www = Blueprint("site", __name__)
 
@@ -13,8 +12,8 @@ from sqlalchemy import or_, and_
 from app import app, db
 from config import ADMINS
 from flask_login import current_user, login_user, logout_user, login_required
-from .forms import QueryForm, LoginForm, RegistrationForm
-from .models import Genome, Country, IndividualsData, GenomeSnp, Insertion, Sources, Methods, Deletion, Reference, EthnicGroups, Disease, NtVariability, AaVariability, User
+from .forms import QueryForm
+from .models import Genome, Country, IndividualsData, GenomeSnp, Insertion, Sources, Methods, Deletion, Reference, EthnicGroups, Disease, NtVariability, AaVariability
 from .query import queryLocus, queryNtVar_N, queryNtVar_P, queryMitomapDna, queryMitomapAa, queryAaVar_N, queryAaVar_P, queryDisease, queryDeletion, queryInsertion, getAltCodon, aa_dict, getAa
 from app.static import dbdata
 
@@ -209,19 +208,14 @@ def body():
 # Downloads Page
 @www.route("/hmdb/downloads", methods=["GET"])
 @www.route("/downloads", methods=["GET"])
-@login_required
 def downloads():
     return render_template("downloads.html",
-                           title="Downloads",
-                           current_user=current_user.id)
+                           title="Downloads")
 
 
 @www.route("/download_file", methods=["GET"])
 def download_file():
     dataset = request.args.get("dataset", "", type=str)
-    user = request.args.get("user")
-
-    add_download_entry(dataset, user)
 
     return send_file("static/zips/" + dataset, mimetype="text/plain",
                      as_attachment=True, attachment_filename=dataset)
@@ -275,8 +269,8 @@ def queryCriteria():
                                 continent=form.continent.data,
                                 country=form.country.data,
                                 macrohap=form.macrohap.data,
-                                # haplogroup=form.haplogroup.data,  # debug: temporarily disabled
-                                # haplogroup_user=form.haplogroup_user.data,  # debug: temporarily disabled
+                                # haplogroup=form.haplogroup.data,  # temporarily disabled
+                                # haplogroup_user=form.haplogroup_user.data,  # temporarily disabled
                                 complete_genome=form.complete_genome.data,
                                 snp_position=form.snp_position.data,
                                 transit=form.transit.data,
@@ -302,7 +296,6 @@ def queryCriteria():
 @www.route("/hmdb/results", methods=["GET", "POST"])
 @www.route("/results", methods=["GET", "POST"])
 def queryResults():
-    #form = ResultsForm()
     if request.method == "GET":
 
         haplotypeHmdb = request.args.get("haplotypeHmdb", "", type=str)
@@ -310,8 +303,8 @@ def queryResults():
         continent = request.args.get("continent", "", type=str)
         country = request.args.get("country", "", type=str)
         macrohap = request.args.get("macrohap", "", type=str)
-        # haplogroup = request.args.get("haplogroup", "", type=str)  # debug: temporarily disabled
-        # haplogroup_user = request.args.get("haplogroup_user", "", type=str)  # debug: temporarily disabled
+        # haplogroup = request.args.get("haplogroup", "", type=str)  # temporarily disabled
+        # haplogroup_user = request.args.get("haplogroup_user", "", type=str)  # temporarily disabled
         complete_genome = request.args.get("complete_genome", "", type=str)
         snp_position = request.args.get("snp_position", "", type=str)
         transit = request.args.getlist("transit")
@@ -350,7 +343,7 @@ def queryResults():
             qString += ".join(countryQ, Genome.genomeId == countryQ.c.genomeId)"
 
         if macrohap:
-            # debug: temporarily disabled to fix issue
+            # temporarily disabled to fix issue
             # if haplogroup:
             #     haplogroupQ = Genome.query.filter(Genome.haplogroupHmdb == haplogroup).subquery()
             # elif haplogroup_user:
@@ -365,11 +358,8 @@ def queryResults():
             qString += ".join(completeGenomeQ, Genome.genomeId == completeGenomeQ.c.genomeId)"
 
         if snp_position:
-            if snp_position == "$$420$$":
-                return redirect("http://isit420.info")  # easter egg!!!
-            elif "," in snp_position:
+            if "," in snp_position:
                 positions = snp_position.split(",")
-                # qui cerco usando OR
                 query_snp = "Genome.query.join(GenomeSnp).filter(or_(GenomeSnp.snpPosition == {}".format(int(positions[0]))
                 for n in range(1, len(positions)):
                     query_snp += ", GenomeSnp.snpPosition == {}".format(int(positions[n]))
@@ -385,8 +375,8 @@ def queryResults():
         if transit:
             if "0" in transit:
                 pass
-                #print "zero"
-                # fare la query su tutte le transition (nessun parametro?)
+                # print "zero"
+                # query all transitions?
             else:
                 if len(transit) == 1:
                     query_transit = "Genome.query.join(GenomeSnp).filter(GenomeSnp.rcrsType == '{t[0]}', GenomeSnp.snpType == '{t[1]}').subquery()".format(t=transit[0])
@@ -406,7 +396,7 @@ def queryResults():
         if transv:
             if "0" in transv:
                 pass
-                # fare la query su tutte le transversioni (nessun parametro?)
+                # query all transversions?
             else:
                 if len(transv) == 1:
                     query_transv = "Genome.query.join(GenomeSnp).filter(GenomeSnp.rcrsType == '{t[0]}', GenomeSnp.snpType == '{t[1]}').subquery()".format(t=transv[0])
@@ -423,12 +413,11 @@ def queryResults():
                 transvQ = eval(query_transv)
                 qString += ".join(transvQ, Genome.genomeId == transvQ.c.genomeId)"
 
-        # todo: completare dopo aver aggiustato il seqinfo
-        #if insertion:
+        # todo: to be continued
+        # if insertion:
         #    pass
 
         if insertion_position:
-            # questo sta bene ma dio cane bisogna cambiare il campo nel model Genome.insertions
             insertionPositionQ = Genome.query.join(Insertion).filter(Insertion.position5P == int(insertion_position)).subquery()
             qString += ".join(insertionPositionQ, Genome.genomeId == insertionPositionQ.c.genomeId)"
 
@@ -436,12 +425,12 @@ def queryResults():
             insertionSequenceQ = Genome.query.join(Insertion).filter(Insertion.sequence == insertion_sequence.upper()).subquery()
             qString += ".join(insertionSequenceQ, Genome.genomeId == insertionSequenceQ.c.genomeId)"
 
-        # todo: completare in un secondo momento
+        # todo: to be continued
         # if insertion_length:
         #     insertionLengthQ = Genome.query.join(Insertion).filter(Insertion.sequence == insertion_length).subquery()
         #     qString += ".join(insertionLengthQ, Genome.genomeId == insertionLengthQ.c.genomeId)"
 
-        # todo: completare dopo aver aggiustato il seqinfo
+        # todo: to be continued
         # if deletion:
         #     if deletion == "False":
         #         #query_del = Deletion.query.filter(Deletion.genomeId != 0).subquery()
@@ -490,7 +479,7 @@ def queryResults():
 
         qString += ".order_by(Genome.genomeId).all()"
         if qString == "Genome.query.order_by(Genome.genomeId).all()":
-            return redirect(url_for("site.queryCriteria"))  # controllo che la query non sia vuota, mettere un alert magari
+            return redirect(url_for("site.queryCriteria"))
         mainQuery = eval(qString)
 
         return render_template("queryResults.html",
@@ -549,7 +538,7 @@ def genomeCard(idGenome):
                                getId=retrieveHmtVar)
 
     elif request.method == "POST":
-
+        # TODO: I can't remember why we also need the POST method...maybe I can remove it
         pass
 
 
@@ -557,8 +546,10 @@ def genomeCard(idGenome):
 @www.route("/ntSitevar/<int:ntPos>", methods=["GET"])
 def ntSitevar(ntPos):
 
-    posN = NtVariability.query.filter(NtVariability.nucleotidePosition == ntPos, NtVariability.genomeType == "N").first()
-    posP = NtVariability.query.filter(NtVariability.nucleotidePosition == ntPos, NtVariability.genomeType == "P").first()
+    posN = NtVariability.query.filter(NtVariability.nucleotidePosition == ntPos,
+                                      NtVariability.genomeType == "N").first()
+    posP = NtVariability.query.filter(NtVariability.nucleotidePosition == ntPos,
+                                      NtVariability.genomeType == "P").first()
 
     return render_template("ntSitevar.html",
                            title="Nt Site Variability",
@@ -571,8 +562,12 @@ def ntSitevar(ntPos):
 @www.route("/aaSitevar/<int:aaPos>/<gene>", methods=["GET"])
 def aaSitevar(aaPos, gene):
 
-    aaVarN = AaVariability.query.filter(AaVariability.aaPos == aaPos, AaVariability.geneName == gene, AaVariability.genomeType == "N").first()
-    aaVarP = AaVariability.query.filter(AaVariability.aaPos == aaPos, AaVariability.geneName == gene, AaVariability.genomeType == "P").first()
+    aaVarN = AaVariability.query.filter(AaVariability.aaPos == aaPos,
+                                        AaVariability.geneName == gene,
+                                        AaVariability.genomeType == "N").first()
+    aaVarP = AaVariability.query.filter(AaVariability.aaPos == aaPos,
+                                        AaVariability.geneName == gene,
+                                        AaVariability.genomeType == "P").first()
 
     return render_template("aaSitevar.html",
                            title="Aa Site Variability",
@@ -580,104 +575,6 @@ def aaSitevar(aaPos, gene):
                            gene=gene,
                            aaVarN=aaVarN,
                            aaVarP=aaVarP)
-
-
-@www.route("/login", methods=["GET", "POST"])
-def login():
-    form = LoginForm()
-
-    if request.method == "GET":
-
-        # expl: if user is already logged in, return to the home page
-        if current_user.is_authenticated:
-            return redirect(url_for("site.index"))
-
-        return render_template("login.html", title="Log In", form=form)
-
-    elif request.method == "POST":
-
-        if form.validate_on_submit():
-            user = User.query.filter(User.username == form.username.data).first()
-
-            if not user.approved:
-                flash("User not confirmed yet. Please wait for the HmtDB approval email.")
-                return redirect(url_for("site.index"))
-
-            # expl: if user does not exist or the entered password is wrong
-            if user is None or not user.check_password(form.password.data):
-                flash("Invalid username or password!")
-                return redirect(url_for("site.login"))
-
-            login_user(user)
-            user.update_last_access()
-            next_page = request.args.get("next")
-
-            # expl: check that the url sent is relative, to avoid external urls
-            if not next_page or url_parse(next_page).netloc != "":
-                next_page = "index"
-
-            return redirect(url_for("site." + next_page.lstrip("/").lstrip("%252F")))
-
-
-@www.route("/logout")
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for("site.index"))
-
-
-@www.route("/register", methods=["GET", "POST"])
-def register():
-    form = RegistrationForm()
-
-    if request.method == "GET":
-
-        if current_user.is_authenticated:
-            return redirect(url_for("site.index"))
-
-        return render_template("register.html", title="Registration", form=form)
-
-    elif request.method == "POST":
-
-        # expl: a series of checks, since the internal ones don't seem to work properly
-        if User.query.filter(User.email == form.email.data).first():
-            flash("Email address already used. Please choose a different email address.")
-            return redirect(url_for("site.register"))
-
-        if User.query.filter(User.username == form.username.data).first():
-            flash("Username existing. Please choose a different username.")
-            return redirect(url_for("site.register"))
-
-        if form.password.data != form.password2.data:
-            flash("Passwords must match. Please check again. ")
-            return redirect(url_for("site.register"))
-
-        if form.validate_on_submit():
-
-            user = User(username=form.username.data, email=form.email.data,
-                        first_name=form.first_name.data, last_name=form.last_name.data)
-            user.set_password(form.password.data)
-            db.session.add(user)
-            db.session.commit()
-            send_email("[HmtDB] User {} registered.".format(form.username.data),
-                       ADMINS[0],
-                       [form.email.data, ADMINS[0]],
-                       render_template("registr_request.txt",
-                                       first_name=form.first_name.data,
-                                       username=form.username.data,
-                                       email=form.email.data))
-            flash("Registration complete! You will be notified when your request is approved.")
-
-            user.set_approval()
-            send_email("[HmtDB] User {} approved".format(form.username.data),
-                       ADMINS[0],
-                       [form.email.data, ADMINS[0]],
-                       render_template("registr_confirm.txt",
-                                       first_name=form.first_name.data,
-                                       username=form.username.data,
-                                       email=form.email.data))
-
-            return redirect(url_for("site.index"))
 
 
 @www.errorhandler(404)

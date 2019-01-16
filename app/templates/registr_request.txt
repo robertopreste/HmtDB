@@ -1,8 +1,0 @@
-Dear {{ first_name }},
-
-Your registration request for user {{ username }} is being processed.
-Once your request is approved, you will be notified at {{ email }} and will then be able to login to HmtDB.
-
-Best regards,
-
-HmtDB

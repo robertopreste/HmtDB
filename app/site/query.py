@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 # Created by Roberto Preste
-from app import db
-from .models import Genome, Locus, NtVariability, MitomapAa, MitomapDna, AaVariability, Disease, \
-    Deletion, Insertion
+from .models import Locus, NtVariability, MitomapAa, MitomapDna, AaVariability, Disease, Deletion, Insertion
 
 
 def queryLocus(snpPosition):
@@ -68,25 +66,21 @@ def queryInsertion(gId):
     return Insertion.query.filter(Insertion.genomeId == gId).all()
 
 
-# Aa translation
-
-
 def getCodon(locus, snp_pos):
-    # qui è tutto sfasato di -1 posizione per la questione 0-based di python
-    if snp_pos % 3 == 0:
+    if snp_pos % 3 == 0:  # codon position 3
         res = locus.rcrsDnaSeq[snp_pos - 3] + locus.rcrsDnaSeq[snp_pos - 2] + locus.rcrsDnaSeq[
             snp_pos - 1]
-    elif snp_pos % 3 == 1:
+    elif snp_pos % 3 == 1:  # codon position 1
         res = locus.rcrsDnaSeq[snp_pos - 1] + locus.rcrsDnaSeq[snp_pos] + locus.rcrsDnaSeq[
             snp_pos + 1]
-    else:
+    else:  # codon position 2
         res = locus.rcrsDnaSeq[snp_pos - 2] + locus.rcrsDnaSeq[snp_pos - 1] + locus.rcrsDnaSeq[
             snp_pos]
     return res
 
 
 def getAltCodon(locus, snp_pos, snp):
-    # qui è tutto sfasato di -1 posizione per la questione 0-based di python
+    # everything is shifted of 1 position due to Python's 0-based numbering
     if snp_pos % 3 == 0:
         res = locus.rcrsDnaSeq[snp_pos - 3] + locus.rcrsDnaSeq[snp_pos - 2] + snp.snpType
     elif snp_pos % 3 == 1:
