@@ -10,9 +10,51 @@ This version exactly reflects the live version available at [https://www.hmtdb.u
 
 ## Installation  
 
-* Install the virtual environment: `virtualenv -p python3.6 venv`  
+* Install the virtual environment: `virtualenv -p python2.7 venv`  
 * Activate the virtual environment: `source venv/bin/activate`  
 * Install required modules: `pip install -r requirements.txt`  
+
+## Creating the database  
+
+```bash
+mysql -u root -p  # root password
+```
+
+Create a new user for HmtDB:  
+
+```mysql
+USE mysql; 
+CREATE USER 'hmtdb_admin'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'hmtdb_admin'@'localhost';
+FLUSH PRIVILEGES; 
+```
+
+Exit MySQL (using `\q`) and enter back using the new credentials:  
+
+```bash
+mysql -u hmtdb_admin -p password
+```
+
+Create the database:  
+
+```mysql
+CREATE DATABASE HmtDB; 
+```
+
+## Migration and upgrade  
+
+Export the Flask app using `export FLASK_APP=app:app`, then:  
+
+* create the database: `flask create-db`  
+* or open a Python interpreter and issue:  
+```python
+from app import db 
+db.drop_all()
+db.create_all()
+```
+* load all the tables into the db: `flask update-db`  
+
+TODO: update tables and load them on the DB. 
 
 ## Running the DB  
 `python run.py`  

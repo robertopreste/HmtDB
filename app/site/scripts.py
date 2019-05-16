@@ -3,7 +3,8 @@
 # Created by Roberto Preste
 import json
 import requests
-from .models import Country, Sources, Disease, Reference, Genome, Stats, NtVariability
+from .models import Country, Sources, Disease, Reference, Genome, Stats, \
+    NtVariability, GenAlignment
 
 
 def retrieveHmtVar(pos, alt):
@@ -72,6 +73,21 @@ def getUserHaplogroups(letter):
         if (el.haplogroupUser, el.haplogroupUser) not in lista:
             lista.append((el.haplogroupUser, el.haplogroupUser))
     return lista
+
+
+def get_alignments(id_list, with_ref=True):
+    """Return a list of tuples with (genomeId, alignment) from query results.
+
+    :param id_list: list of genomeIds
+    :param with_ref: include reference genome as first element (default: True)
+    :return: [(gnomeId, alignment), ...]
+    """
+    if with_ref:
+        id_list = [0] + id_list
+    q = GenAlignment.query.filter(GenAlignment.genomeId.in_(id_list)).all()
+    algs = [(el.genomeId, el.alignment) for el in q]
+
+    return algs
 
 
 def getStats():

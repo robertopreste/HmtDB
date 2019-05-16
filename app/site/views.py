@@ -3,27 +3,35 @@
 # Created by Roberto Preste
 import requests
 import json
-from flask import Blueprint, render_template, flash, redirect, session, url_for, request, g, jsonify, send_file
-from .scripts import retrieveHmtVar
+import os
+from flask import Blueprint, render_template, flash, redirect, session, \
+    url_for, request, g, jsonify, send_file, after_this_request
+from .scripts import retrieveHmtVar, get_alignments
 
 www = Blueprint("site", __name__)
 
 from sqlalchemy import or_, and_
 from app import app, db
 from config import ADMINS
-from flask_login import current_user, login_user, logout_user, login_required
+# from flask_login import current_user, login_user, logout_user, login_required
 from .forms import QueryForm
-from .models import Genome, Country, IndividualsData, GenomeSnp, Insertion, Sources, Methods, Deletion, Reference, EthnicGroups, Disease, NtVariability, AaVariability
-from .query import queryLocus, queryNtVar_N, queryNtVar_P, queryMitomapDna, queryMitomapAa, queryAaVar_N, queryAaVar_P, queryDisease, queryDeletion, queryInsertion, getAltCodon, aa_dict, getAa
+from .models import Genome, Country, IndividualsData, GenomeSnp, Insertion, \
+    Sources, Methods, Deletion, Reference, EthnicGroups, Disease, NtVariability, \
+    AaVariability
+from .query import queryLocus, queryNtVar_N, queryNtVar_P, queryMitomapDna, \
+    queryMitomapAa, queryAaVar_N, queryAaVar_P, queryDisease, queryDeletion, \
+    queryInsertion, getAltCodon, aa_dict, getAa, queryMitomapDnaDiseases
 from app.static import dbdata
 
 
 # RD-Connect common API
 @www.route("/rdconnect", methods=["GET"])
 def rdconnect():
-    """Return information about one specific variant in the format recommended by RD-Connect.
-    The request gets forwarded to HmtVar, then the response is parsed to retrieve the variant Id,
-    which is then applied to the variantCard function below."""
+    """Return information about one specific variant in the format
+    recommended by RD-Connect.
+    The request gets forwarded to HmtVar, then the response is parsed to
+    retrieve the variant Id, which is then applied to the variantCard
+    function below."""
 
     gene_id = request.args.get("gene_id")
     variant_assembly = request.args.get("variant_assembly")
@@ -69,14 +77,16 @@ def rdconnect():
         resp = []
         for el in json_res:
             hmtvar_id = el["url"].split("/")[-1]
-            resp.append({"url": url_for("site.variantCard", idVar=hmtvar_id, _external=True, _scheme="https"),
+            resp.append({"url": url_for("site.variantCard", idVar=hmtvar_id,
+                                        _external=True, _scheme="https"),
                          "success": "true"})
     elif isinstance(json_res, dict):
         if json_res["success"] == "false":
             resp = {"success": "false"}
         else:
             hmtvar_id = json_res["url"].split("/")[-1]
-            resp = {"url": url_for("site.variantCard", idVar=hmtvar_id, _external=True, _scheme="https"),
+            resp = {"url": url_for("site.variantCard", idVar=hmtvar_id,
+                                   _external=True, _scheme="https"),
                     "success": "true"}
     else:
         resp = {"success": "false"}
@@ -221,6 +231,24 @@ def download_file():
                      as_attachment=True, attachment_filename=dataset)
 
 
+@www.route("/download_algs", methods=["GET"])
+def download_algs():
+    genome_ids = request.args.get("genome_ids", "", type=str)
+    id_list = list(map(int, genome_ids.split("_")))
+    algs = get_alignments(id_list)
+    with open("app/site/alg_dl/hmtdb_algs.fa", "w") as f:
+        for el in algs:
+            f.write(">{}\n{}\n".format(el[0], el[1]))
+
+    @after_this_request
+    def remove_file(response):
+        os.remove("app/site/alg_dl/hmtdb_algs.fa")
+        return response
+
+    return send_file("site/alg_dl/hmtdb_algs.fa", mimetype="text/plain",
+                     as_attachment=True, attachment_filename="hmtdb_algs.fa")
+
+
 # Site Variability Page
 @www.route("/hmdb/siteVariability", methods=["GET"])
 @www.route("/siteVariability", methods=["GET"])
@@ -358,8 +386,8 @@ def queryResults():
             qString += ".join(completeGenomeQ, Genome.genomeId == completeGenomeQ.c.genomeId)"
 
         if snp_position:
-            if "," in snp_position:
-                positions = snp_position.split(",")
+            if "_" in snp_position:
+                positions = snp_position.split("_")
                 query_snp = "Genome.query.join(GenomeSnp).filter(or_(GenomeSnp.snpPosition == {}".format(int(positions[0]))
                 for n in range(1, len(positions)):
                     query_snp += ", GenomeSnp.snpPosition == {}".format(int(positions[n]))
@@ -485,7 +513,9 @@ def queryResults():
         return render_template("queryResults.html",
                                title="Results",
                                numResults=len(mainQuery),
-                               results=mainQuery)
+                               results=mainQuery,
+                               genids="_".join([str(el.genomeId)
+                                                for el in mainQuery]))
 
 
 @www.route("/hmdb/genomeCard/<int:idGenome>", methods=["GET", "POST"])
@@ -527,6 +557,7 @@ def genomeCard(idGenome):
                                queryNtVar_P=queryNtVar_P,
                                queryMitomapDna=queryMitomapDna,
                                queryMitomapAa=queryMitomapAa,
+                               queryMitomapDnaDiseases=queryMitomapDnaDiseases,
                                queryAaVar_N=queryAaVar_N,
                                queryAaVar_P=queryAaVar_P,
                                queryDisease=queryDisease,

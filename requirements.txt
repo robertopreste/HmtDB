@@ -16,3 +16,6 @@ sklearn
 requests
 gunicorn
 pysam
+python-dotenv
+mysqlclient
+click

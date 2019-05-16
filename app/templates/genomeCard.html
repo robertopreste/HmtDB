@@ -260,6 +260,7 @@
                                 {% set snp_pos = snp.snpPosition - locus.startPosition + 1 %}
                                 {% set snp_aa_pos = ((snp.snpPosition - locus.startPosition) // 3) + 1 %}
                                 {% set mitoDna = queryMitomapDna(snp) %}
+                                {% set mitoDis = queryMitomapDnaDiseases(mitoDna) %}
                                 {% set mitoAa = queryMitomapAa(snp_aa_pos, locus) %}
                                 {% set aa_var_n = queryAaVar_N(snp_aa_pos, locus) %}
                                 {% set aa_var_p = queryAaVar_P(snp_aa_pos, locus) %}
@@ -333,24 +334,43 @@
 
                                 <td class="w3-center" style="vertical-align: middle">
 
-                                {% if mitoDna %}
+                                {% if mitoDis %}
 
-                                    {% set dis = mitoDna.diseases.split(";") %}
-                                    {% for dId in dis %}
-                                        {% set d = queryDisease(dId) %}
-                                        {% if d %}
-                                            {% if d.url != "NULL" and d.url != "" %}
+                                    {% for dis in mitoDis %}
+                                        {% if dis %}
 
-                                                <a href="{{ d.url }}" target="_blank">{{ d.diseaseName }}</a><br />
-
+                                            {% if dis.url != "NULL" and dis.url != "" %}
+                                                <a href="{{ dis.url }}" target="_blank">{{ dis.diseaseName }}</a><br />
                                             {% else %}
-
-                                                {{ d.diseaseName }}<br />
-
+                                                {{ dis.diseaseName }}<br />
                                             {% endif %}
+
                                         {% endif %}
                                     {% endfor %}
-                                {% endif %}</td>
+
+                                {% endif %}
+
+
+{#                                {% if mitoDna %}#}
+{##}
+{#                                    {% set dis = mitoDna.diseases.split(";") %}#}
+{#                                    {% for dId in dis %}#}
+{#                                        {% set d = queryDisease(dId) %}#}
+{#                                        {% if d %}#}
+{#                                            {% if d.url != "NULL" and d.url != "" %}#}
+{##}
+{#                                                <a href="{{ d.url }}" target="_blank">{{ d.diseaseName }}</a><br />#}
+{##}
+{#                                            {% else %}#}
+{##}
+{#                                                {{ d.diseaseName }}<br />#}
+{##}
+{#                                            {% endif %}#}
+{#                                        {% endif %}#}
+{#                                    {% endfor %}#}
+{#                                {% endif %}#}
+
+                                </td>
 
                             </tr>
 

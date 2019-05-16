@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 # Created by Roberto Preste
-from .models import Locus, NtVariability, MitomapAa, MitomapDna, AaVariability, Disease, Deletion, Insertion
+from .models import Locus, NtVariability, MitomapAa, MitomapDna, AaVariability, \
+    Disease, Deletion, Insertion
 
 
 def queryLocus(snpPosition):
@@ -14,46 +15,63 @@ def queryLocus(snpPosition):
 
 def queryNtVar_N(snp):
     """Return the nt variability object of the snp, for normal genome."""
-    return NtVariability.query.filter(NtVariability.nucleotidePosition == snp.snpPosition,
-                                      NtVariability.genomeType == "N").first()
+    return NtVariability.query.filter(
+        NtVariability.nucleotidePosition == snp.snpPosition,
+        NtVariability.genomeType == "N").first()
 
 
 def queryNtVar_P(snp):
     """Return the nt variability object of the snp, for pathologic genome."""
-    return NtVariability.query.filter(NtVariability.nucleotidePosition == snp.snpPosition,
-                                      NtVariability.genomeType == "P").first()
+    return NtVariability.query.filter(
+        NtVariability.nucleotidePosition == snp.snpPosition,
+        NtVariability.genomeType == "P").first()
 
 
 def queryMitomapAa(snp_aa_pos, locus):
     """Return the aa mitomap object for the corresponding locus and aa position."""
-    return MitomapAa.query.filter(MitomapAa.geneName == locus.geneName,
-                                  MitomapAa.aaPosition == int(snp_aa_pos)).first()
+    return MitomapAa.query.filter(
+        MitomapAa.geneName == locus.geneName,
+        MitomapAa.aaPosition == int(snp_aa_pos)).first()
 
 
 def queryMitomapDna(snp):
     """Return the dna mitomap object for the corresponding nucleotide position and snp type."""
-    return MitomapDna.query.filter(MitomapDna.nucleotidePosition == snp.snpPosition,
-                                   MitomapDna.rcrsType == snp.rcrsType,
-                                   MitomapDna.snpType == snp.snpType).first()
+    return MitomapDna.query.filter(
+        MitomapDna.nucleotidePosition == snp.snpPosition,
+        MitomapDna.rcrsType == snp.rcrsType,
+        MitomapDna.snpType == snp.snpType).first()
 
 
 def queryAaVar_N(snp_aa_pos, locus):
     """Return the aa variability object of the snp, for normal genome."""
-    return AaVariability.query.filter(AaVariability.aaPos == snp_aa_pos,
-                                      AaVariability.geneName == locus.geneName,
-                                      AaVariability.genomeType == "N").first()
+    return AaVariability.query.filter(
+        AaVariability.aaPos == snp_aa_pos,
+        AaVariability.geneName == locus.geneName,
+        AaVariability.genomeType == "N").first()
 
 
 def queryAaVar_P(snp_aa_pos, locus):
     """Return the aa variability object of the snp, for pathologic genome."""
-    return AaVariability.query.filter(AaVariability.aaPos == snp_aa_pos,
-                                      AaVariability.geneName == locus.geneName,
-                                      AaVariability.genomeType == "P").first()
+    return AaVariability.query.filter(
+        AaVariability.aaPos == snp_aa_pos,
+        AaVariability.geneName == locus.geneName,
+        AaVariability.genomeType == "P").first()
 
 
 def queryDisease(dId):
     """Return the disease object corresponding to the specified dId (diseaseId)."""
     return Disease.query.filter(Disease.diseaseId == dId).first()
+
+
+def queryMitomapDnaDiseases(mito_dna):
+    """Return the list of disease objects corresponding to the given MitomapDna entry."""
+    if mito_dna is None or mito_dna.diseases is None:
+        return None
+    if ";" in mito_dna.diseases:
+        dis = mito_dna.diseases.split(";")
+        return [Disease.query.filter(Disease.diseaseId == int(el)).first()
+                for el in dis]
+    return [Disease.query.filter(Disease.diseaseId == int(mito_dna.diseases)).first()]
 
 
 def queryDeletion(gId):
@@ -68,25 +86,34 @@ def queryInsertion(gId):
 
 def getCodon(locus, snp_pos):
     if snp_pos % 3 == 0:  # codon position 3
-        res = locus.rcrsDnaSeq[snp_pos - 3] + locus.rcrsDnaSeq[snp_pos - 2] + locus.rcrsDnaSeq[
-            snp_pos - 1]
+        res = locus.rcrsDnaSeq[snp_pos - 3] \
+              + locus.rcrsDnaSeq[snp_pos - 2] \
+              + locus.rcrsDnaSeq[snp_pos - 1]
     elif snp_pos % 3 == 1:  # codon position 1
-        res = locus.rcrsDnaSeq[snp_pos - 1] + locus.rcrsDnaSeq[snp_pos] + locus.rcrsDnaSeq[
-            snp_pos + 1]
+        res = locus.rcrsDnaSeq[snp_pos - 1] \
+              + locus.rcrsDnaSeq[snp_pos] \
+              + locus.rcrsDnaSeq[snp_pos + 1]
     else:  # codon position 2
-        res = locus.rcrsDnaSeq[snp_pos - 2] + locus.rcrsDnaSeq[snp_pos - 1] + locus.rcrsDnaSeq[
-            snp_pos]
+        res = locus.rcrsDnaSeq[snp_pos - 2] \
+              + locus.rcrsDnaSeq[snp_pos - 1] \
+              + locus.rcrsDnaSeq[snp_pos]
     return res
 
 
 def getAltCodon(locus, snp_pos, snp):
     # everything is shifted of 1 position due to Python's 0-based numbering
     if snp_pos % 3 == 0:
-        res = locus.rcrsDnaSeq[snp_pos - 3] + locus.rcrsDnaSeq[snp_pos - 2] + snp.snpType
+        res = locus.rcrsDnaSeq[snp_pos - 3] \
+              + locus.rcrsDnaSeq[snp_pos - 2] \
+              + snp.snpType
     elif snp_pos % 3 == 1:
-        res = snp.snpType + locus.rcrsDnaSeq[snp_pos] + locus.rcrsDnaSeq[snp_pos + 1]
+        res = snp.snpType \
+              + locus.rcrsDnaSeq[snp_pos] \
+              + locus.rcrsDnaSeq[snp_pos + 1]
     else:
-        res = locus.rcrsDnaSeq[snp_pos - 2] + snp.snpType + locus.rcrsDnaSeq[snp_pos]
+        res = locus.rcrsDnaSeq[snp_pos - 2] \
+              + snp.snpType \
+              + locus.rcrsDnaSeq[snp_pos]
     return res
 
 

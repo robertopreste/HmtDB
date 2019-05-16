@@ -6,17 +6,18 @@ from app.api.views import api
 from app.site.models import Methods
 from app.api.models import method_schema, method_schema_many
 
-ns = api.namespace("methods", description="Retrieve data from the Methods table.")
+ns = api.namespace("methods",
+                   description="Retrieve data from the Methods table.")
 
 
 @ns.deprecated
 @ns.route("/")
 class MethodsList(Resource):
     def get(self):
-        """
-        Get all the entries in Methods table.
-        It is not recommended to run this query, as it may load a huge number of entries and
-        consequently slow down your browser.
+        """Get all the entries in Methods table.
+
+        It is not recommended to run this query, as it may load a huge
+        number of entries and consequently slow down your browser.
         Will return a list of entries.
         """
         q = Methods.query.all()
@@ -26,8 +27,8 @@ class MethodsList(Resource):
 @ns.route("/<int:method_id>")
 class MethodsId(Resource):
     def get(self, method_id):
-        """
-        Find the information associated with the specified id.
+        """Find the information associated with the specified id.
+
         Will return a single entry.
         """
         q = Methods.query.filter(Methods.methodId == method_id).first()

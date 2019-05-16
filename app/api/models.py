@@ -54,9 +54,13 @@ class IndividualSchema(ma.ModelSchema):
     class Meta:
         model = IndividualsData
 
-    Country = ma.Nested(CountrySchema, exclude=("countryId", "countryCode", "continentCode", "individuals"))
-    Disease = ma.Nested(DiseaseSchema, exclude=("diseaseId", "individuals", "mitoAa", "mitoDna"))
-    EthnicGroups = ma.Nested(EthnicSchema, exclude=("groupId", "groupDescription", "individuals"))
+    Country = ma.Nested(CountrySchema, exclude=("countryId", "countryCode",
+                                                "continentCode", "individuals"))
+    Disease = ma.Nested(DiseaseSchema, exclude=("diseaseId", "individuals",
+                                                "mitoAa", "mitoDna"))
+    EthnicGroups = ma.Nested(EthnicSchema, exclude=("groupId",
+                                                    "groupDescription",
+                                                    "individuals"))
 
 
 class MethodSchema(ma.ModelSchema):

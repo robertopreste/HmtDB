@@ -12,11 +12,26 @@
 
             <p class="paragraphs w3-padding">Your query has returned <strong>{{ numResults }}</strong> records. For further information on one or more specific genomes please click on the appropriate links in the following table.</p>
 
-            <div class="w3-container w3-center">
-
-                <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-medium" name="Back" onclick="location.href='{{ url_for('site.queryCriteria') }}'">Back to Query HmtDB</button>
-
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="w3-container w3-center">
+                        <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-medium" name="Back" onclick="location.href='{{ url_for('site.queryCriteria') }}'">Back to Query HmtDB</button>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="w3-container w3-center">
+                        <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-medium" name="Download_Algs" onclick="location.href='{{ url_for('site.download_algs', genome_ids=genids) }}'">Download genome alignments</button>
+                        <br>
+                        <p class="paragraphs_noind">In order to view and edit alignments, we suggest you download the latest version of the <a href="http://www.ormbunkar.se/aliview/" title="AliView" target="_blank">AliView</a> software, or you can use the <a href="https://msa.biojs.net" title="MSA" target="_blank">MSA</a> editor right from the browser.</p>
+                    </div>
+                </div>
             </div>
+
+{#            <div class="w3-container w3-center">#}
+{##}
+{#                <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-medium" name="Back" onclick="location.href='{{ url_for('site.queryCriteria') }}'">Back to Query HmtDB</button>#}
+{##}
+{#            </div>#}
 
             <br />
 
@@ -101,17 +116,21 @@
     <div class="row">
 
         <div class="col-sm-12 w3-center">
-            <label class="w3-validate">
-                <input class="w3-check" type="checkbox" name="chk_genome_anderson" id="chk_genome_anderson" checked> Include the RSRS Reference Sequence in the alignments
-            </label>
-            {# todo: rimettere la possibilità di scaricare le sequenze (magari solo le sequenze, no multiallineamento) #}
-            <br /><br />
+{#            <label class="w3-validate">#}
+{#                <input class="w3-check" type="checkbox" name="chk_genome_anderson" id="chk_genome_anderson" checked> Include the RSRS Reference Sequence in the alignments#}
+{#            </label>#}
+{#            <br /><br />#}
+            <div class="w3-container w3-center">
+                <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-medium" name="Download_Algs" onclick="location.href='{{ url_for('site.download_algs', genome_ids=genids) }}'">Download genome alignments</button>
+                <br><br>
+                <p class="paragraphs_noind">In order to view and edit alignments, we suggest you download the latest version of the <a href="http://www.ormbunkar.se/aliview/" title="AliView" target="_blank">AliView</a> software, or you can use the <a href="https://msa.biojs.net" title="MSA" target="_blank">MSA</a> editor right from the browser.</p>
+            </div>
             <!--<input type="button" class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-small" name="btn3" onclick="javascript:document.location.href='<%=BioConstantBean.htmlJSPHome + BioConstantBean.ViewGenomeCardJsp + BioConstantBean.jspExt%>?selectValue='+buildSelectedList()" value="View Genome Cards">
             <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-small" name="btn1" onclick="javascript:formsubmit2('true', 'sequences')">Download Sequences</button>
             <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-small" name="btn1" onclick="javascript:formsubmit2('true', 'alignment')">Download Alignment</button>-->
             <br />
-            <p class="paragraphs_noind">In order to view and edit alignments, we suggest you download the latest version of the <a href="http://www.ormbunkar.se/aliview/">AliView</a> software.</p>
-            <br>
+{#            <p class="paragraphs_noind">In order to view and edit alignments, we suggest you download the latest version of the <a href="http://www.ormbunkar.se/aliview/">AliView</a> software.</p>#}
+{#            <br>#}
 
             <div class="w3-container w3-center">
 
