@@ -20,25 +20,25 @@ This version exactly reflects the live version available at [https://www.hmtdb.u
 mysql -u root -p  # root password
 ```
 
+Create the database:  
+
+```mysql
+CREATE DATABASE HmtDB; 
+```
+
 Create a new user for HmtDB:  
 
 ```mysql
 USE mysql; 
 CREATE USER 'hmtdb_admin'@'localhost' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON *.* TO 'hmtdb_admin'@'localhost';
+GRANT ALL PRIVILEGES ON HmtDB.* TO 'hmtdb_admin'@'localhost';
 FLUSH PRIVILEGES; 
 ```
 
 Exit MySQL (using `\q`) and enter back using the new credentials:  
 
 ```bash
-mysql -u hmtdb_admin -p password
-```
-
-Create the database:  
-
-```mysql
-CREATE DATABASE HmtDB; 
+mysql -u hmtdb_admin -p 
 ```
 
 ## Migration and upgrade  
@@ -54,7 +54,7 @@ db.create_all()
 ```
 * load all the tables into the db: `flask update-db`  
 
-TODO: update tables and load them on the DB. 
+* update all the accessory data: `flask migrate-db`  
 
 ## Running the DB  
 `python run.py`  
