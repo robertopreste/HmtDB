@@ -3,18 +3,20 @@
 # Created by Roberto Preste
 import requests
 import json
-from flask import Blueprint, render_template, flash, redirect, session, url_for, request, g, jsonify, send_file
-from .scripts import retrieveHmtVar
+import os
+from flask import Blueprint, render_template, flash, redirect, session, \
+    url_for, request, g, jsonify, send_file, after_this_request
+from .scripts import retrieveHmtVar, get_alignments
 
 www = Blueprint("site", __name__)
 
 from sqlalchemy import or_, and_
 from app import app, db
 from config import ADMINS
-from flask_login import current_user, login_user, logout_user, login_required
+# from flask_login import current_user, login_user, logout_user, login_required
 from .forms import QueryForm
 from .models import Genome, Country, IndividualsData, GenomeSnp, Insertion, Sources, Methods, Deletion, Reference, EthnicGroups, Disease, NtVariability, AaVariability
-from .query import queryLocus, queryNtVar_N, queryNtVar_P, queryMitomapDna, queryMitomapAa, queryAaVar_N, queryAaVar_P, queryDisease, queryDeletion, queryInsertion, getAltCodon, aa_dict, getAa
+from .query import queryLocus, queryNtVar_N, queryNtVar_P, queryMitomapDna, queryMitomapAa, queryAaVar_N, queryAaVar_P, queryDisease, queryDeletion, queryInsertion, getAltCodon, aa_dict, getAa, queryMitomapDnaDiseases
 from app.static import dbdata
 
 
@@ -248,6 +250,24 @@ def stats():
                            vardict=dbdata.varDict)
 
 
+@www.route("/download_algs", methods=["GET"])
+def download_algs():
+    genome_ids = request.args.get("genome_ids", "", type=str)
+    id_list = list(map(int, genome_ids.split("_")))
+    algs = get_alignments(id_list)
+    with open("app/site/alg_dl/hmtdb_algs.fa", "w") as f:
+        for el in algs:
+            f.write(">{}\n{}\n".format(el[0], el[1]))
+
+    @after_this_request
+    def remove_file(response):
+        os.remove("app/site/alg_dl/hmtdb_algs.fa")
+        return response
+
+    return send_file("site/alg_dl/hmtdb_algs.fa", mimetype="text/plain",
+                     as_attachment=True, attachment_filename="hmtdb_algs.fa")
+
+
 # Query Page
 @www.route("/hmdb/query", methods=["GET", "POST"])
 @www.route("/query", methods=["GET", "POST"])
@@ -358,8 +378,8 @@ def queryResults():
             qString += ".join(completeGenomeQ, Genome.genomeId == completeGenomeQ.c.genomeId)"
 
         if snp_position:
-            if "," in snp_position:
-                positions = snp_position.split(",")
+            if "_" in snp_position:
+                positions = snp_position.split("_")
                 query_snp = "Genome.query.join(GenomeSnp).filter(or_(GenomeSnp.snpPosition == {}".format(int(positions[0]))
                 for n in range(1, len(positions)):
                     query_snp += ", GenomeSnp.snpPosition == {}".format(int(positions[n]))
@@ -485,7 +505,9 @@ def queryResults():
         return render_template("queryResults.html",
                                title="Results",
                                numResults=len(mainQuery),
-                               results=mainQuery)
+                               results=mainQuery,
+                               genids="_".join([str(el.genomeId)
+                                                for el in mainQuery]))
 
 
 @www.route("/hmdb/genomeCard/<int:idGenome>", methods=["GET", "POST"])
@@ -527,6 +549,7 @@ def genomeCard(idGenome):
                                queryNtVar_P=queryNtVar_P,
                                queryMitomapDna=queryMitomapDna,
                                queryMitomapAa=queryMitomapAa,
+                               queryMitomapDnaDiseases=queryMitomapDnaDiseases,
                                queryAaVar_N=queryAaVar_N,
                                queryAaVar_P=queryAaVar_P,
                                queryDisease=queryDisease,

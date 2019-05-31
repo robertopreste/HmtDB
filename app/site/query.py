@@ -56,6 +56,17 @@ def queryDisease(dId):
     return Disease.query.filter(Disease.diseaseId == dId).first()
 
 
+def queryMitomapDnaDiseases(mito_dna):
+    """Return the list of disease objects corresponding to the given MitomapDna entry."""
+    if mito_dna is None or mito_dna.diseases is None:
+        return None
+    if ";" in mito_dna.diseases:
+        dis = mito_dna.diseases.split(";")
+        return [Disease.query.filter(Disease.diseaseId == int(el)).first()
+                for el in dis]
+    return [Disease.query.filter(Disease.diseaseId == int(mito_dna.diseases)).first()]
+
+
 def queryDeletion(gId):
     """Return the list of deletions of the specified genome."""
     return Deletion.query.filter(Deletion.genomeId == gId).all()

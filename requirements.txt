@@ -16,3 +16,5 @@ sklearn
 requests
 gunicorn
 pysam
+python-dotenv
+click
