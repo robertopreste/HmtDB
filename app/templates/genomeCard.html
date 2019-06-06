@@ -121,6 +121,14 @@
 
                 </div>
 
+                <br>
+
+                <div class="w3-container w3-center">
+                    <button class="pulsanti w3-hover-light-blue w3-hover-text-indigo w3-padding w3-round-large w3-medium" name="Download_Algs" onclick="location.href='{{ url_for('site.download_algs', genome_ids=genome.genomeId) }}'">Download genome alignment</button>
+                    <br>
+                    <p class="paragraphs_noind">In order to view and edit alignments, we suggest you download the latest version of the <a href="http://www.ormbunkar.se/aliview/" title="AliView" target="_blank">AliView</a> software, or you can use the <a href="https://msa.biojs.net" title="MSA" target="_blank">MSA</a> editor right from the browser.</p>
+                </div>
+
                 <!-- Individual Table -->
                 {% if genome.haplotypeHmdb != "NULL" %}
                     <h5 class="main_titles">Individual's Data</h5>

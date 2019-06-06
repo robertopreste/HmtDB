@@ -13,6 +13,9 @@ This version exactly reflects the live version available at [https://www.hmtdb.u
 * Install the virtual environment: `virtualenv -p python3.6 venv`  
 * Activate the virtual environment: `source venv/bin/activate`  
 * Install required modules: `pip install -r requirements.txt`  
+* Create the DB: `export FLASK_APP=app:app; flask create-db`  
+* Update the DB: `flask update-db`  
+* Migrate the DB: `flask migrate-db`  
 
 ## Running the DB  
 `python run.py`  
