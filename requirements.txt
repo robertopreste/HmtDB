@@ -18,3 +18,4 @@ gunicorn
 pysam
 python-dotenv
 click
+pytest

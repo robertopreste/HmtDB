@@ -3,53 +3,86 @@
 # Created by Roberto Preste
 import json
 import requests
+import operator
 from .models import Country, Sources, Disease, Reference, Genome, Stats, NtVariability, GenAlignment
 
 
 def retrieveHmtVar(pos, alt):
-    """Retrieve information from HmtVar so that the Variant Card can be shown."""
+    """Retrieve information from HmtVar so that the Variant Card
+    can be shown.
 
+    :param int pos: mitochondrial input position
+
+    :param str alt: alternative allele
+
+    :return: str
+    """
     url = "https://www.hmtvar.uniba.it/rdconnect?variant_start={}&variant_alternateBases={}".format(
         pos, alt)
 
-    mainApi = requests.get(url)
-    json_res = json.loads(mainApi.text)
+    resp = requests.get(url)
+    json_res = resp.json()
 
-    if isinstance(json_res, dict):
-        if json_res["success"] == "false":
-            resp = 0
-        else:
-            hmtvar_id = json_res["url"].split("/")[-1]
-            resp = hmtvar_id
+    if resp.ok and json_res["success"] == "true":
+        hmtvar_id = json_res["url"].split("/")[-1]
     else:
-        resp = 0
+        hmtvar_id = "0"
 
-    return resp
+    return hmtvar_id
 
 
 def getCountries(cont):
-    lista = []
-    for el in Country.query.filter_by(continentCode=cont).all():
-        if (el.countryId, el.countryName) not in lista:
-            lista.append((el.countryId, el.countryName))
-    return lista
+    """Return the list of countryId and countryName for the given
+    continent code.
+
+    :param str cont: input continent code
+
+    :return: List[Tuple[int,str]]
+    """
+    res = set()
+    countries = Country.query.filter_by(continentCode=cont).all()
+    for el in countries:
+        res.add((el.countryId, el.countryName))
+    res_list = list(res)
+    res_list.sort(key=operator.itemgetter(1))
+    return res_list
 
 
 def getSources():
-    lista = set()
-    for el in Sources.query.all():
-        lista.add((el.sourceId, el.sourceName))
-    return list(lista)
+    """Return the list of sourceId and sourceName for each entry
+    in Sources.
+
+    :return: List[Tuple[int,str]]
+    """
+    res = set()
+    sources = Sources.query.all()
+    for el in sources:
+        res.add((el.sourceId, el.sourceName))
+    res_list = list(res)
+    res_list.sort(key=operator.itemgetter(1))
+    return res_list
 
 
 def getDiseases():
-    lista = set()
-    for el in Disease.query.all():
-        lista.add((el.diseaseId, el.diseaseName))
-    return list(lista)
+    """Return the list of diseaseId and diseaseName for each entry
+    in Disease.
+
+    :return: List[Tuple[int,str]]
+    """
+    res = set()
+    diseases = Disease.query.all()
+    for el in diseases:
+        res.add((el.diseaseId, el.diseaseName))
+    res_list = list(res)
+    res_list.sort(key=operator.itemgetter(1))
+    return res_list
 
 
 def getJournals():
+    """Return the list of papers for each entry in Reference.
+
+    :return: List[Tuple[str,str]]
+    """
     lista = set()
     for el in Reference.query.all():
         lista.add((el.paper, el.paper))
