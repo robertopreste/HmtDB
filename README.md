@@ -5,7 +5,7 @@ Open source version of the Human Mitochondrial Database [HmtDB](https://www.hmtd
 This version exactly reflects the live version available at [https://www.hmtdb.uniba.it](https://www.hmtdb.uniba.it), with a couple exceptions:  
 
 * files containing passwords and API keys are not present due to obvious security reasons  
-* the database only contains a few sequences due to available space limits.  
+* the database only contains a few sequences due to space limits.  
 
 
 ## Installation  
@@ -16,6 +16,8 @@ This version exactly reflects the live version available at [https://www.hmtdb.u
 * Create the DB: `export FLASK_APP=app:app; flask create-db`  
 * Update the DB: `flask update-db`  
 * Migrate the DB: `flask migrate-db`  
+
+**Please note that HmtDB won't run if you won't provide the related `.env` file and tables to build the db. Please contact me for further information.**  
 
 ## Running the DB  
 `python run.py`  
