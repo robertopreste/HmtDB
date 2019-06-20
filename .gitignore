@@ -252,5 +252,5 @@ fabric.properties
 .nfs*
 
 .idea/
-db_repo/
-update/
+hmtdb.db
+update/data/
