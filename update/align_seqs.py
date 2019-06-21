@@ -97,7 +97,7 @@ def align_seqs():
 
     os.system("mkdir -p {}".format(new_alg_dir))
     # expl: qui lancio mafft per fare l'allineamento
-    os.system("{} --thread 4 --add {} --keeplength {} > {}/alg_{}.fasta".format(args.mafft_exec, to_align, total_alg,
+    os.system("{} --thread -1 --add {} --keeplength {} > {}/alg_{}.fasta".format(args.mafft_exec, to_align, total_alg,
                                                         new_alg_dir, args.from_date))
 
     logging.info("Alignment complete.")
