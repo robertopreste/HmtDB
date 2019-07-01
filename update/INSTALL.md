@@ -30,7 +30,9 @@ Info disponibili a [questo link](https://mafft.cbrc.jp/alignment/software/instal
 * `cd ../`  
 * `python setup.py build`  
 * `python setup.py install`  
-* `cd ../`
+* `cd ../`  
+* `pip install -r ../requirements.txt`  
+* `conda install pandas`  
 
 ## Mitvar (variabilità aminoacidica)  
 
