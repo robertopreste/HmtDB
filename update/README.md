@@ -78,7 +78,7 @@ Per il classico aggiornamento generale di HmtDB, va lanciato come `python nt_var
 
 **Script `allele_freqs.py`**  
 
-Questo script si occupa di calcolare le frequenze alleliche (dato che a quanto pare la porzione dell'`nt_var.py` che se dovrebbe farlo non funziona a dovere), le salva in specifici file csv nella cartella `all_freqs` e le carica nel db.  
+Questo script si occupa di calcolare le frequenze alleliche (dato che a quanto pare la porzione dell'`nt_var.py` che anche se dovrebbe farlo non funziona a dovere), le salva in specifici file csv nella cartella `all_freqs` e le carica nel db.  
 Per lanciarlo sui sani:  
 ```
 python allele_freqs.py -H

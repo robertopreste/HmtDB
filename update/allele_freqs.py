@@ -37,8 +37,8 @@ QUERY_CONT_PA = "SELECT 'EU_XX_0000' AS 'HAPLOTYPE', ALIGNMENT FROM GenAlignment
 QUERY_REF = "SELECT 'EU_XX_0000' AS 'HAPLOTYPE', ALIGNMENT FROM GenAlignment WHERE genomeId = 0"
 
 base_path = os.path.dirname(os.path.abspath("."))  # HmtDB_flask/
-algs_path = os.path.join(base_path, "db_update", "tmp_algs")
-freq_path = os.path.join(base_path, "db_update", "all_freqs")
+algs_path = os.path.join(base_path, "update", "tmp_algs")
+freq_path = os.path.join(base_path, "update", "all_freqs")
 if not os.path.isdir(algs_path):
     os.mkdir(algs_path)
 if not os.path.isdir(freq_path):
