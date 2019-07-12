@@ -16,7 +16,7 @@ from config import ADMINS
 # from flask_login import current_user, login_user, logout_user, login_required
 from .forms import QueryForm
 from .models import Genome, Country, IndividualsData, GenomeSnp, Insertion, Sources, Methods, Deletion, Reference, EthnicGroups, Disease, NtVariability, AaVariability
-from .query import queryLocus, queryNtVar_N, queryNtVar_P, queryMitomapDna, queryMitomapAa, queryAaVar_N, queryAaVar_P, queryDisease, queryDeletion, queryInsertion, getAltCodon, aa_dict, getAa, queryMitomapDnaDiseases
+from .query import queryLocus, queryNtVar_N, queryNtVar_P, queryMitomapDna, queryMitomapAa, queryAaVar_N, queryAaVar_P, queryDisease, queryDeletion, queryInsertion, getAltCodon, aa_dict, getAa, queryMitomapDnaDiseases, get_snp_pos, get_aa_pos
 from app.static import dbdata
 
 
@@ -558,7 +558,9 @@ def genomeCard(idGenome):
                                getAltCodon=getAltCodon,
                                aa_dict=aa_dict,
                                getAa=getAa,
-                               getId=retrieveHmtVar)
+                               getId=retrieveHmtVar,
+                               get_snp_pos=get_snp_pos,
+                               get_aa_pos=get_aa_pos)
 
     elif request.method == "POST":
         # TODO: I can't remember why we also need the POST method...maybe I can remove it

@@ -77,28 +77,73 @@ def queryInsertion(gId):
     return Insertion.query.filter(Insertion.genomeId == gId).all()
 
 
+def rev_compl(sequence):
+    """Return the reverse complement of the given sequence.
+
+    :param str sequence: input DNA sequence
+
+    :return: str
+    """
+    _COMPLEM_DICT = {"A": "T", "C": "G", "G": "C", "T": "A",
+                     "U": "A", "R": "Y", "Y": "R", "S": "W",
+                     "W": "S", "K": "M", "M": "K", "B": "A",
+                     "D": "C", "H": "G", "V": "T"}
+    return "".join([_COMPLEM_DICT[nt.upper()] for nt in sequence])[::-1]
+
+
+def get_snp_pos(locus, snp):
+    if locus.geneName == "MT-ND6":
+        snp_pos = locus.endPosition - snp.snpPosition + 1
+    else:
+        snp_pos = snp.snpPosition - locus.startPosition + 1
+
+    return snp_pos
+
+
+def get_aa_pos(locus, snp):
+    if locus.geneName == "MT-ND6":
+        aa_pos = (locus.endPosition - snp.snpPosition) // 3 + 1
+    else:
+        aa_pos = (snp.snpPosition - locus.startPosition) // 3 + 1
+
+    return aa_pos
+
+
 def getCodon(locus, snp_pos):
-    if snp_pos % 3 == 0:  # codon position 3
-        res = locus.rcrsDnaSeq[snp_pos - 3] + locus.rcrsDnaSeq[snp_pos - 2] + locus.rcrsDnaSeq[
-            snp_pos - 1]
-    elif snp_pos % 3 == 1:  # codon position 1
-        res = locus.rcrsDnaSeq[snp_pos - 1] + locus.rcrsDnaSeq[snp_pos] + locus.rcrsDnaSeq[
-            snp_pos + 1]
-    else:  # codon position 2
-        res = locus.rcrsDnaSeq[snp_pos - 2] + locus.rcrsDnaSeq[snp_pos - 1] + locus.rcrsDnaSeq[
-            snp_pos]
-    return res
+    if locus.geneName == "MT-ND6":  # reversed dna sequence
+        dna_seq = rev_compl(locus.rcrsDnaSeq)
+    else:
+        dna_seq = locus.rcrsDnaSeq
+
+    codon_position = snp_pos % 3 if snp_pos % 3 != 0 else 3
+    if codon_position == 1:
+        codon = dna_seq[snp_pos - 1] + dna_seq[snp_pos] + dna_seq[snp_pos + 1]
+    elif codon_position == 2:
+        codon = dna_seq[snp_pos - 2] + dna_seq[snp_pos - 1] + dna_seq[snp_pos]
+    else:
+        codon = dna_seq[snp_pos - 3] + dna_seq[snp_pos - 2] + dna_seq[snp_pos]
+
+    return codon
 
 
 def getAltCodon(locus, snp_pos, snp):
     # everything is shifted of 1 position due to Python's 0-based numbering
-    if snp_pos % 3 == 0:
-        res = locus.rcrsDnaSeq[snp_pos - 3] + locus.rcrsDnaSeq[snp_pos - 2] + snp.snpType
-    elif snp_pos % 3 == 1:
-        res = snp.snpType + locus.rcrsDnaSeq[snp_pos] + locus.rcrsDnaSeq[snp_pos + 1]
+    if locus.geneName == "MT-ND6":
+        dna_seq = rev_compl(locus.rcrsDnaSeq)
+        snp_nt = rev_compl(snp.snpType)
     else:
-        res = locus.rcrsDnaSeq[snp_pos - 2] + snp.snpType + locus.rcrsDnaSeq[snp_pos]
-    return res
+        dna_seq = locus.rcrsDnaSeq
+        snp_nt = snp.snpType
+
+    codon_position = snp_pos % 3 if snp_pos % 3 != 0 else 3
+    if codon_position == 1:
+        codon = snp_nt + dna_seq[snp_pos] + dna_seq[snp_pos + 1]
+    elif codon_position == 2:
+        codon = dna_seq[snp_pos - 2] + snp_nt + dna_seq[snp_pos]
+    else:
+        codon = dna_seq[snp_pos - 3] + dna_seq[snp_pos - 2] + snp_nt
+
+    return codon
 
 
 aa_dict = {

@@ -265,8 +265,8 @@
                             {% else %}
 
                                 {% set locus_length = locus.endPosition - locus.startPosition + 1 %}
-                                {% set snp_pos = snp.snpPosition - locus.startPosition + 1 %}
-                                {% set snp_aa_pos = ((snp.snpPosition - locus.startPosition) // 3) + 1 %}
+                                {% set snp_pos = get_snp_pos(locus, snp) %}
+                                {% set snp_aa_pos = get_aa_pos(locus, snp) %}
                                 {% set mitoDna = queryMitomapDna(snp) %}
                                 {% set mitoDis = queryMitomapDnaDiseases(mitoDna) %}
                                 {% set mitoAa = queryMitomapAa(snp_aa_pos, locus) %}
