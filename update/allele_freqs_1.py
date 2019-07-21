@@ -81,8 +81,7 @@ def convert_seq_to_df(genome_type, continent):
     logging.info("Loading {} {} sequences...".format(continent, genome_type))
     df = pd.read_csv(os.path.join(algs_path, "alg_{}_{}.csv".format(continent, genome_type)),
                      names=["id", "alg_seq"], skiprows=1)
-    logging.info("Done. Loaded {} sequences from {}.".format(df.shape[0],
-                                                             os.path.join(algs_path, "alg_{}_{}.csv".format(continent, genome_type))))
+    logging.info("Done.")
     logging.info("Loading reference genome alignment...")
     refj = pd.read_csv(os.path.join(algs_path, "refj.csv"), names=["id", "alg_seq"], skiprows=1)
     logging.info("Done.")
@@ -111,8 +110,11 @@ def convert_seq_to_df(genome_type, continent):
     logging.info("Starting conversion of alignments to dataframe...")
     # fr_df = pd.DataFrame(columns=indexes)
     fr_df = df.alg_seq.str.split("", expand=True).fillna("-").drop(0, axis=1)
-    while len(fr_df.columns) != len(indexes):
-        fr_df.drop(fr_df.columns[len(fr_df.columns) - 1], axis=1, inplace=True)
+    if len(fr_df.columns) < len(indexes):
+        indexes = indexes[:len(fr_df.columns)]
+    else:
+        while len(fr_df.columns) != len(indexes):
+            fr_df.drop(fr_df.columns[len(fr_df.columns) - 1], axis=1, inplace=True)
     fr_df.columns = indexes
 
     # for row in df.set_index("id").itertuples():
