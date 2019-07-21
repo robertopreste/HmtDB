@@ -104,11 +104,12 @@ def convert_seq_to_df(genome_type, continent):
         else:  # gap position
             i += 1
         indexes.append("{}.{}_{}".format(n, i, el))
-    logging.info("Done.")
+    logging.info("Done. Saved {} indexes.".format(len(indexes)))
 
     # Conversion of sequences
     logging.info("Starting conversion of alignments to dataframe...")
     # fr_df = pd.DataFrame(columns=indexes)
+    df.set_index("id", inplace=True)
     fr_df = df.alg_seq.str.split("", expand=True).fillna("-").drop(0, axis=1)
     if len(fr_df.columns) < len(indexes):
         indexes = indexes[:len(fr_df.columns)]
