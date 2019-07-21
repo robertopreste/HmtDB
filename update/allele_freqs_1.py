@@ -110,6 +110,7 @@ def convert_seq_to_df(genome_type, continent):
     logging.info("Starting conversion of alignments to dataframe...")
     # fr_df = pd.DataFrame(columns=indexes)
     fr_df = df.alg_seq.str.split("", expand=True).fillna("-").drop(0, axis=1)
+    fr_df.columns = indexes
 
     # for row in df.set_index("id").itertuples():
     #     if len(tuple(list(row.alg_seq))) == len(indexes):
