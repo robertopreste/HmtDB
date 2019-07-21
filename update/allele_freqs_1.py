@@ -81,7 +81,8 @@ def convert_seq_to_df(genome_type, continent):
     logging.info("Loading {} {} sequences...".format(continent, genome_type))
     df = pd.read_csv(os.path.join(algs_path, "alg_{}_{}.csv".format(continent, genome_type)),
                      names=["id", "alg_seq"], skiprows=1)
-    logging.info("Done.")
+    logging.info("Done. Loaded {} sequences from {}.".format(df.shape[0],
+                                                             os.path.join(algs_path, "alg_{}_{}.csv".format(continent, genome_type))))
     logging.info("Loading reference genome alignment...")
     refj = pd.read_csv(os.path.join(algs_path, "refj.csv"), names=["id", "alg_seq"], skiprows=1)
     logging.info("Done.")
