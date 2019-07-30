@@ -211,8 +211,8 @@ def calculate_freqs(genome_type, continent):
             freq_val = ";".join([str(var_df.loc[idx]["A"]), str(var_df.loc[idx]["C"]),
                                  str(var_df.loc[idx]["G"]), str(var_df.loc[idx]["T"]),
                                  str(var_df.loc[idx]["gap"] + var_df.loc[idx]["oth"])])
-            nt_pos = var_df.loc[idx]["site"].split(".")[0]
-            ins_pos = var_df.loc[idx]["site"].split(".")[1]
+            nt_pos = str(var_df.loc[idx]["site"]).split(".")[0]
+            ins_pos = str(var_df.loc[idx]["site"]).split(".")[1]
             update_freq(nt_pos, ins_pos, genome_type, continent, freq_val)
 
         logging.info("Done.")
@@ -229,8 +229,8 @@ def upload_freqs(genome_type, continent):
         freq_val = ";".join([str(var_df.loc[idx]["A"]), str(var_df.loc[idx]["C"]),
                              str(var_df.loc[idx]["G"]), str(var_df.loc[idx]["T"]),
                              str(var_df.loc[idx]["gap"] + var_df.loc[idx]["oth"])])
-        nt_pos = var_df.loc[idx]["site"].split(".")[0]
-        ins_pos = var_df.loc[idx]["site"].split(".")[1]
+        nt_pos = str(var_df.loc[idx]["site"]).split(".")[0]
+        ins_pos = str(var_df.loc[idx]["site"]).split(".")[1]
         update_freq(nt_pos, ins_pos, genome_type, continent, freq_val)
 
     logging.info("Done.")

@@ -94,7 +94,7 @@ ed aggiungere il flag -H quando necessario.
 Se lo script `allele_freqs.py` non dovesse funzionare usando `qsub` su Recas, usare `allele_freqs_1.py` in locale (dopo aver scaricato il db), specificando `-l` per creare solo i file in locale, il continente con `-c` (uno tra "AF", "AM", "AS", "EU", "OC", "tot") e `-H` nel caso dei sani.  
 I file saranno creati nella cartella `all_freqs`, quindi vanno trasferiti su Recas e caricati sul db usando l'opzione`-u` e `-c` per specificare il continente (e all'occorrenza `-H` per lavorare sui sani) come sopra:  
 ```
-python allele_freqs.py -u -c AF
+python allele_freqs_1.py -u -c AF
 ```
 Processo un po' macchinoso ma questo passa il convento (dei servizi informatici dell'Uniba).
 
