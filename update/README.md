@@ -78,7 +78,7 @@ Per il classico aggiornamento generale di HmtDB, va lanciato come `python nt_var
 
 **Script `allele_freqs.py`**  
 
-Questo script si occupa di calcolare le frequenze alleliche (dato che a quanto pare la porzione dell'`nt_var.py` che anche se dovrebbe farlo non funziona a dovere), le salva in specifici file csv nella cartella `all_freqs` e le carica nel db.  
+Questo script si occupa di calcolare le frequenze alleliche (dato che a quanto pare la porzione dell'`nt_var.py` che dovrebbe farlo non funziona a dovere), le salva in specifici file csv nella cartella `all_freqs` e le carica nel db.  
 Per lanciarlo sui sani:  
 ```
 python allele_freqs.py -H
@@ -89,6 +89,14 @@ Per calcolare le frequenze alleliche sui genomi completi ed evitare di caricare 
 python allele_freqs.py -C -l
 ```
 ed aggiungere il flag -H quando necessario.  
+
+**Nota**  
+Se lo script `allele_freqs.py` non dovesse funzionare usando `qsub` su Recas, usare `allele_freqs_1.py` in locale (dopo aver scaricato il db), specificando `-l` per creare solo i file in locale, il continente con `-c` (uno tra "AF", "AM", "AS", "EU", "OC", "tot") e `-H` nel caso dei sani.  
+I file saranno creati nella cartella `all_freqs`, quindi vanno trasferiti su Recas e caricati sul db usando l'opzione`-u` e `-c` per specificare il continente (e all'occorrenza `-H` per lavorare sui sani) come sopra:  
+```
+python allele_freqs.py -u -c AF
+```
+Processo un po' macchinoso ma questo passa il convento (dei servizi informatici dell'Uniba).
 
 ### Aminoacid variability  
 

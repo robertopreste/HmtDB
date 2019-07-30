@@ -22,8 +22,13 @@ parser.add_argument("-H", "--healthy", action="store_true", dest="on_healthy",
                     help="Launch the program on healthy genomes (default: False).")
 parser.add_argument("-C", "--complete", action="store_true", dest="on_complete",
                     help="Launch the program on complete genomes (default: False).")
+parser.add_argument("-c", "--continent", dest="on_continent", type=str,
+                    help="Launch the program on the given continent ([tot, AF, AM, AS, EU, OC])")
 parser.add_argument("-l", "--local", action="store_true", dest="local",
                     help="Do not work on db, but only create local files (default: False).",
+                    default=False)
+parser.add_argument("-u", "--upload", action="store_true", dest="upload",
+                    help="Only upload allele frequencies calculated beforehand (default: False).",
                     default=False)
 
 args = parser.parse_args()
@@ -45,32 +50,30 @@ if not os.path.isdir(freq_path):
     os.mkdir(freq_path)
 
 
-def dump_algs(genome_type, complete_genome):
+def dump_algs(genome_type, complete_genome, continent):
     """Download alignments from the database and save them as csv files."""
 
-    logging.info("Saving {} alignment to {}...".format(genome_type, algs_path))
-    os.system("sqlite3 -header -csv {} \"{}\" > {}".format(os.path.join(base_path, "hmtdb.db"),
-                                                       QUERY_TOTAL.format(genome_type, complete_genome),
-                                                       os.path.join(algs_path, "alg_tot_{}.csv".format(genome_type))))
-    logging.info("Done.")
-
-    logging.info("Saving {} continent-specific alignments to {}...".format(genome_type, algs_path))
-    for cont in ["AF", "AM", "AS", "EU", "OC"]:
-        logging.info("Continent {}...".format(cont))
+    if continent == "tot":
+        logging.info("Saving {} total alignment to {}...".format(genome_type, algs_path))
+        os.system("sqlite3 -header -csv {} \"{}\" > {}".format(os.path.join(base_path, "hmtdb.db"),
+                                                               QUERY_TOTAL.format(genome_type, complete_genome),
+                                                               os.path.join(algs_path, "alg_tot_{}.csv".format(genome_type))))
+    else:
+        logging.info("Saving {} continent-specific {} alignments to {}...".format(genome_type, continent, algs_path))
         if genome_type == "N":
             os.system("sqlite3 -header -csv {} \"{}\" > {}".format(os.path.join(base_path, "hmtdb.db"),
-                                                               QUERY_CONT.format(cont, complete_genome),
-                                                               os.path.join(algs_path, "alg_{}_{}.csv".format(cont, genome_type))))
+                                                                   QUERY_CONT.format(continent, complete_genome),
+                                                                   os.path.join(algs_path, "alg_{}_{}.csv".format(continent, genome_type))))
         else:
             os.system("sqlite3 -header -csv {} \"{}\" > {}".format(os.path.join(base_path, "hmtdb.db"),
-                                                               QUERY_CONT_PA.format(cont, complete_genome),
-                                                               os.path.join(algs_path, "alg_{}_{}.csv".format(cont, genome_type))))
+                                                                   QUERY_CONT_PA.format(continent, complete_genome),
+                                                                   os.path.join(algs_path, "alg_{}_{}.csv".format(continent, genome_type))))
     logging.info("Done.")
 
     logging.info("Saving reference genome alignment...")
     os.system("sqlite3 -header -csv {} \"{}\" > {}".format(os.path.join(base_path, "hmtdb.db"),
-                                                       QUERY_REF,
-                                                       os.path.join(algs_path, "refj.csv")))
+                                                           QUERY_REF,
+                                                           os.path.join(algs_path, "refj.csv")))
     logging.info("Done.")
 
 
@@ -215,6 +218,24 @@ def calculate_freqs(genome_type, continent):
         logging.info("Done.")
 
 
+def upload_freqs(genome_type, continent):
+    """Upload the allele frequencies after they have been already
+    calculated and stored as a dataframe."""
+    logging.info("Uploading allele frequencies for {} {} sequences on db...".format(continent, genome_type))
+    final_path = os.path.join(freq_path, "sitevar_{}_{}.csv".format(continent, genome_type))
+    var_df = pd.read_csv(final_path)
+
+    for idx in var_df.index:
+        freq_val = ";".join([str(var_df.loc[idx]["A"]), str(var_df.loc[idx]["C"]),
+                             str(var_df.loc[idx]["G"]), str(var_df.loc[idx]["T"]),
+                             str(var_df.loc[idx]["gap"] + var_df.loc[idx]["oth"])])
+        nt_pos = var_df.loc[idx]["site"].split(".")[0]
+        ins_pos = var_df.loc[idx]["site"].split(".")[1]
+        update_freq(nt_pos, ins_pos, genome_type, continent, freq_val)
+
+    logging.info("Done.")
+
+
 def main():
     if args.on_healthy:
         genome_type = "N"
@@ -225,11 +246,18 @@ def main():
     if args.on_complete:
         complete_genome = "AND completeGenome = 'Y'"
 
-    dump_algs(genome_type, complete_genome)
+    continent = args.on_continent
 
-    for cont in ["tot", "AF", "AM", "AS", "EU", "OC"]:
-        convert_seq_to_df(genome_type, cont)
-        calculate_freqs(genome_type, cont)
+    if args.upload:
+        upload_freqs(genome_type, continent)
+    else:
+        dump_algs(genome_type, complete_genome, continent)
+        convert_seq_to_df(genome_type, continent)
+        calculate_freqs(genome_type, continent)
+
+    # for cont in ["tot", "AF", "AM", "AS", "EU", "OC"]:
+    #     convert_seq_to_df(genome_type, cont)
+    #     calculate_freqs(genome_type, cont)
     # convert_seq_to_df(genome_type, "tot")
     # calculate_freqs(genome_type, "tot")
 
