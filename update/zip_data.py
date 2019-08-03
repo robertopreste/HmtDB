@@ -123,7 +123,7 @@ def main():
         logging.info("Estrazione della variabilità totale dei genomi {}...".format(genome_type))
         extract_var(genome_type)
 
-    os.system("mv zips/ ../app/static/")
+    # os.system("mv zips/ ../app/static/")
 
 # todo: creazione dei file direttamente nella cartella zips dell'applicazione, per ora lo fa in una cartella zips locale
 
