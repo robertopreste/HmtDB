@@ -19,7 +19,7 @@ When finished, deactivate the virtual environment: `deactivate`.
 ## Updates  
 
 Please refer to the [/update/INSTALL.md](/update/INSTALL.md) and [/update/README.md](/update/README.md) files for details about the updating protocol for HmtDB.  
-After the updating procedure is complete, please run `flask migrate-db`.  
+After the updating procedure is complete, please run `flask migrate-db`, then `systemctl restart HmtDB` (with `sudo` if needed).  
 
 ## HmtDB instance  
 
