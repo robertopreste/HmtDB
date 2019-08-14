@@ -1,27 +1,26 @@
 # HmtDB  
 
-Open source version of the Human Mitochondrial Database [HmtDB](https://www.hmtdb.uniba.it).  
-
-This version exactly reflects the live version available at [https://www.hmtdb.uniba.it](https://www.hmtdb.uniba.it), with a couple exceptions:  
-
-* files containing passwords and API keys are not present due to obvious security reasons  
-* the database only contains a few sequences due to space limits.  
+The Human Mitochondrial Database [HmtDB](https://www.hmtdb.uniba.it).  
 
 
 ## Installation  
 
-* Install the virtual environment: `virtualenv -p python3.6 venv`  
-* Activate the virtual environment: `source venv/bin/activate`  
-* Install required modules: `pip install -r requirements.txt`  
-* Create the DB: `export FLASK_APP=app:app; flask create-db`  
-* Update the DB: `flask update-db`  
-* Migrate the DB: `flask migrate-db`  
+Only the first time the database is set up:  
 
-**Please note that HmtDB won't run if you won't provide the related `.env` file and tables to build the db. Please contact me for further information.**  
-
-## Running the DB  
-`python run.py`  
+1. Create a new virtual environment (Python 3): `virtualenv -p python3.6 venv`  
+2. Activate the virtual environment: `source venv/bin/activate`  
+3. Install required modules: `pip install -r requirements.txt`  
+4. Create the DB: `export FLASK_APP=app:app; flask create-db`  
+5. Update the DB: `flask update-db`  
+6. Migrate the DB: `flask migrate-db`  
 
 When finished, deactivate the virtual environment: `deactivate`.  
 
+## Updates  
 
+Please refer to the [/update/INSTALL.md](/update/INSTALL.md) and [/update/README.md](/update/README.md) files for details about the updating protocol for HmtDB.  
+After the updating procedure is complete, please run `flask migrate-db`.  
+
+## HmtDB instance  
+
+HmtDB is served using [gunicorn](https://gunicorn.org); please ask your system admin for help about this.  

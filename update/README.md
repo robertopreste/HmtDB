@@ -125,6 +125,8 @@ Salva i multiallineamenti ed i dati di variabilità in file zippati scaricabili 
 python zip_data.py
 ```
 
+I file zippati vanno poi spostati in /app/static/zips/.  
+
 ### Calculate statistics  
 
 **Script `calc_stats.py`**  

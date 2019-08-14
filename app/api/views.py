@@ -15,5 +15,5 @@ class MyApi(Api):
 
 res = Blueprint("api", __name__)
 api = MyApi(res, version="1.0", title="HmtDB API",
-            description="A simple API for data hosted on HmtDB.")
+            description="A simple API for data hosted on HmtDB. - CURRENTLY UNMAINTAINED.")
 
