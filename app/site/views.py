@@ -359,7 +359,10 @@ def queryResults():
             if country:
                 countryQ = Genome.query.join(IndividualsData).filter(IndividualsData.countryId == country).subquery()
             else:
-                countryQ = Genome.query.join(IndividualsData.query.join(Country, IndividualsData.countryId == Country.countryId).filter(Country.continentCode == continent)).subquery()
+                continent_countries = Country.query.filter(Country.continentCode == continent).all()
+                continent_ids = [el.countryId for el in continent_countries]
+                countryQ = Genome.query.join(IndividualsData).filter(IndividualsData.countryId.in_(continent_ids)).subquery()
+                # countryQ = Genome.query.join(IndividualsData.query.join(Country, IndividualsData.countryId == Country.countryId).filter(Country.continentCode == continent)).subquery()
             qString += ".join(countryQ, Genome.genomeId == countryQ.c.genomeId)"
 
         if macrohap:
