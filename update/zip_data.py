@@ -89,7 +89,7 @@ def extract_var(genome_type, continent=None):
     base_name = os.path.join(os.path.dirname(os.path.abspath(__file__)), base_name)
 
     with open(base_name + ".csv", "w") as f:
-        f.write("Position,Variability,\%A,\%C,\%T,\%G,\%GAP\n")
+        f.write("Position,Variability,\%A,\%C,\%G,\%T,\%GAP\n")
 
         for pos, ins, var, comp in res:
             pos = ".".join((str(pos), str(ins)))
