@@ -105,13 +105,13 @@
                         {% for cont in ["Africa", "America", "Asia", "Europe", "Oceania", "Undefined Continent", "All Continents"] %}
                             <tr>
                                 <td class="w3-center" rowspan="2" style="vertical-align: middle">{{ cont }}</td>
-                                <td class="w3-center" style="vertical-align: middle">Normal</td>
+                                <td class="w3-center" style="vertical-align: middle">Healthy</td>
                                 <td class="w3-center" style="vertical-align: middle">{{ worlddict[cont]["N"][0] }}</td>
                                 <td class="w3-center" style="vertical-align: middle">{{ worlddict[cont]["N"][1] }}</td>
                                 <td class="w3-center" style="vertical-align: middle">{{ worlddict[cont]["N"][2] }}</td>
                             </tr>
                             <tr>
-                                <td class="w3-center" style="vertical-align: middle">Patient</td>
+                                <td class="w3-center" style="vertical-align: middle">Pathologic</td>
                                 <td class="w3-center" style="vertical-align: middle">{{ worlddict[cont]["P"][0] }}</td>
                                 <td class="w3-center" style="vertical-align: middle">{{ worlddict[cont]["P"][1] }}</td>
                                 <td class="w3-center" style="vertical-align: middle">{{ worlddict[cont]["P"][2] }}</td>
